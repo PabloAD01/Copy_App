@@ -21,10 +21,10 @@ const ProductsCard = ({data}: Props) => {
         }}/>
       <View style={styles.cardContent}>
         <View>
-          <Text>{data.name}</Text>
+          <Text style={{color: 'black'}}>{data.name}</Text>
         </View>
         <View>
-          <Text>{data.price}</Text>
+          <Text style={{color: 'black'}}>{data.price}</Text>
         </View>
         </View>
     </TouchableOpacity>
@@ -37,13 +37,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#F3EFEF',
     elevation: 5,
+    
   },
   cardContent: {
   width: '100%',
   flex:1,
   flexDirection: 'column',
   justifyContent: 'space-between',
-  padding: 10
+  padding: 10,
   }
 })
 
