@@ -1,6 +1,8 @@
-import React from 'react';
-import {Image, Text, View, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {Image, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {IProduct} from '../screens/HomeScreen';
+import LikeButton from './LikeButton';
+
 
 type Props = {
   data: IProduct;
@@ -9,6 +11,13 @@ type Props = {
 
 
 const ProductsCard = ({data}: Props) => {
+
+  const [playing, setPlaying] = useState(data?.like || false);
+
+  const handlePress = () => {
+    setPlaying(!playing);
+  }
+
   return (
     <TouchableOpacity style={styles.cardContainer}>
       <Image
@@ -21,10 +30,16 @@ const ProductsCard = ({data}: Props) => {
         }}/>
       <View style={styles.cardContent}>
         <View>
-          <Text style={{color: 'black'}}>{data.name}</Text>
+          <View style={{flexDirection: 'row', gap: 10,}}>
+            <Text style={{color: '#757575'}}>{data.uploaded}</Text>
+            <Text style={{color: '#757575'}}>{data.location}</Text>
+          </View>
+          <Text style={{color: '#333333'}}>{data.description}</Text>
         </View>
-        <View>
-          <Text style={{color: 'black'}}>{data.price}</Text>
+        <View style={{flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'}}>
+          <Text style={{color: '#F08648' ,fontWeight: '600', fontSize: 20}}>{data.price}</Text>
+            <LikeButton like={playing} onPress={handlePress} />
+        
         </View>
         </View>
     </TouchableOpacity>
@@ -35,7 +50,7 @@ const ProductsCard = ({data}: Props) => {
 const styles = StyleSheet.create({
   cardContainer:{ 
     flexDirection: 'row',
-    backgroundColor: '#F3EFEF',
+    backgroundColor: '#FFF',
     elevation: 5,
     
   },

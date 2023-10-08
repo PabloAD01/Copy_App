@@ -10,116 +10,148 @@ type Props = {};
 
 export interface IProduct {
   id: number;
-  name: string;
+  description: string;
   price: string;
+  uploaded?: string;
+  location?: string;
+  like?: boolean;
 }
 
 const products: IProduct[] = [
   {
     id: 1,
-    name: 'Product 1',
+    description: 'Product 1',
     price: '$10.000',
+    uploaded: '2023-10-07',
+    location: 'Santiago, Chile',
+    like: false,
   },
   {
     id: 2,
-    name: 'Product 2',
+    description: 'Product 2',
     price: '$20.000',
+    uploaded: '2023-10-07',
+    location: 'Valparaíso, Chile',
+    like: false,
   },
   {
     id: 3,
-    name: 'Product 3',
+    description: 'Product 3',
     price: '$30.000',
+    uploaded: '2023-10-07',
+    location: 'Concepción, Chile',
+    like: false,
   },
   {
     id: 4,
-    name: 'Product 4',
+    description: 'Product 4',
     price: '$40.000',
+    uploaded: '2023-10-07',
+    location: 'Antofagasta, Chile',
+    like: false,
   },
   {
     id: 5,
-    name: 'Product 5',
+    description: 'Product 5',
     price: '$50.000',
+    uploaded: '2023-10-07',
+    location: 'Arica, Chile',
+    like: false,
   },
   {
     id: 6,
-    name: 'Product 6',
+    description: 'Product 6',
     price: '$60.000',
+    uploaded: '2023-10-07',
+    location: 'Iquique, Chile',
+    like: false,
   },
   {
     id: 7,
-    name: 'Product 7',
+    description: 'Product 7',
     price: '$70.000',
+    uploaded: '2023-10-07',
+    location: 'Punta Arenas, Chile',
+    like: false,
   },
   {
     id: 8,
-    name: 'Product 8',
+    description: 'Product 8',
     price: '$80.000',
+    uploaded: '2023-10-08',
+    location: 'La Serena, Chile',
+    like: false,
   },
   {
     id: 9,
-    name: 'Product 9',
+    description: 'Product 9',
     price: '$90.000',
+    uploaded: '2023-10-08',
+    location: 'Temuco, Chile',
+    like: false,
   },
   {
     id: 10,
-    name: 'Product 10',
+    description: 'Product 10',
     price: '$100.000',
+    uploaded: '2023-10-08',
+    location: 'Rancagua, Chile',
+    like: false,
   },
 ];
 
 const products2: IProduct[] = [
   {
     id: 1,
-    name: 'Product 1',
+    description: 'Product 1',
     price: '$10.000',
   },
   {
     id: 2,
-    name: 'Product 2',
+    description: 'Product 2',
     price: '$20.000',
   },
   {
     id: 3,
-    name: 'Product 3',
+    description: 'Product 3',
     price: '$30.000',
   },
   {
     id: 4,
-    name: 'Product 4',
+    description: 'Product 4',
     price: '$40.000',
   },
   {
     id: 5,
-    name: 'Product 5',
+    description: 'Product 5',
     price: '$50.000',
   },
   {
     id: 6,
-    name: 'Product 6',
+    description: 'Product 6',
     price: '$60.000',
   },
   {
     id: 7,
-    name: 'Product 7',
+    description: 'Product 7',
     price: '$70.000',
   },
   {
     id: 8,
-    name: 'Product 8',
+    description: 'Product 8',
     price: '$80.000',
   },
   {
     id: 9,
-    name: 'Product 9',
+    description: 'Product 9',
     price: '$90.000',
   },
   {
     id: 10,
-    name: 'Product 10',
+    description: 'Product 10',
     price: '$100.000',
   },
 ];
-
 const HomeScreen = (props: Props) => {
   return (
     <View style={styles.mainContainer}>
