@@ -12,7 +12,7 @@ const LikeButton = ({like, onPress}: Props) => {
 
   useEffect(() => {
     if (like) {
-      animationRef.current?.play(30, 120);
+      animationRef.current?.play(60, 120);
     } else {
       animationRef.current?.play(70,30)
     }
@@ -20,7 +20,7 @@ const LikeButton = ({like, onPress}: Props) => {
 
   return (
     <TouchableOpacity
-      style={{ width: 30, height: 30, position: 'relative'}}
+      style={{ width: 30, height: 30, position: 'relative' }}
       onPress={onPress}>
       <LottieView
         style={{

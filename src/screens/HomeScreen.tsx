@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import ProductsCard from '../components/ProductsCard';
 import ProductsCard2 from '../components/ProductsCard2';
@@ -6,6 +6,9 @@ import {ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import { HomeScreenNavigationProp } from '../../App';
+import {Api, ApiP} from '../../Api';
 type Props = {};
 
 export interface IProduct {
@@ -15,144 +18,51 @@ export interface IProduct {
   uploaded?: string;
   location?: string;
   like?: boolean;
+  info?: {
+    [key: string]: any;
+  };
 }
 
-const products: IProduct[] = [
-  {
-    id: 1,
-    description: 'Product 1',
-    price: '$10.000',
-    uploaded: '2023-10-07',
-    location: 'Santiago, Chile',
-    like: false,
-  },
-  {
-    id: 2,
-    description: 'Product 2',
-    price: '$20.000',
-    uploaded: '2023-10-07',
-    location: 'Valparaíso, Chile',
-    like: false,
-  },
-  {
-    id: 3,
-    description: 'Product 3',
-    price: '$30.000',
-    uploaded: '2023-10-07',
-    location: 'Concepción, Chile',
-    like: false,
-  },
-  {
-    id: 4,
-    description: 'Product 4',
-    price: '$40.000',
-    uploaded: '2023-10-07',
-    location: 'Antofagasta, Chile',
-    like: false,
-  },
-  {
-    id: 5,
-    description: 'Product 5',
-    price: '$50.000',
-    uploaded: '2023-10-07',
-    location: 'Arica, Chile',
-    like: false,
-  },
-  {
-    id: 6,
-    description: 'Product 6',
-    price: '$60.000',
-    uploaded: '2023-10-07',
-    location: 'Iquique, Chile',
-    like: false,
-  },
-  {
-    id: 7,
-    description: 'Product 7',
-    price: '$70.000',
-    uploaded: '2023-10-07',
-    location: 'Punta Arenas, Chile',
-    like: false,
-  },
-  {
-    id: 8,
-    description: 'Product 8',
-    price: '$80.000',
-    uploaded: '2023-10-08',
-    location: 'La Serena, Chile',
-    like: false,
-  },
-  {
-    id: 9,
-    description: 'Product 9',
-    price: '$90.000',
-    uploaded: '2023-10-08',
-    location: 'Temuco, Chile',
-    like: false,
-  },
-  {
-    id: 10,
-    description: 'Product 10',
-    price: '$100.000',
-    uploaded: '2023-10-08',
-    location: 'Rancagua, Chile',
-    like: false,
-  },
-];
-
-const products2: IProduct[] = [
-  {
-    id: 1,
-    description: 'Product 1',
-    price: '$10.000',
-  },
-  {
-    id: 2,
-    description: 'Product 2',
-    price: '$20.000',
-  },
-  {
-    id: 3,
-    description: 'Product 3',
-    price: '$30.000',
-  },
-  {
-    id: 4,
-    description: 'Product 4',
-    price: '$40.000',
-  },
-  {
-    id: 5,
-    description: 'Product 5',
-    price: '$50.000',
-  },
-  {
-    id: 6,
-    description: 'Product 6',
-    price: '$60.000',
-  },
-  {
-    id: 7,
-    description: 'Product 7',
-    price: '$70.000',
-  },
-  {
-    id: 8,
-    description: 'Product 8',
-    price: '$80.000',
-  },
-  {
-    id: 9,
-    description: 'Product 9',
-    price: '$90.000',
-  },
-  {
-    id: 10,
-    description: 'Product 10',
-    price: '$100.000',
-  },
-];
 const HomeScreen = (props: Props) => {
+
+  const [products, setProducts] = useState([]);
+  const [products2, setProducts2] = useState([]);
+   
+  
+
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await fetch(Api);
+        const data = await response.json();
+        setProducts(data.products);
+      } catch (error:any) {
+        console.error('Error fetching products:', error.message);
+      }
+      try {
+        const response = await fetch(ApiP);
+        const data = await response.json();
+        setProducts2(data.products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    getProducts();
+
+
+
+  }, []);
+
+  const navigation = useNavigation<HomeScreenNavigationProp>()
+
+  const handlePress = (products : IProduct) => {
+    navigation.navigate('Product', {product: products});
+    
+  }
+
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
@@ -184,13 +94,13 @@ const HomeScreen = (props: Props) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingVertical: 10}}
           ItemSeparatorComponent={() => <View style={{width: 10}} />}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <ProductsCard2 data={item} />}
+          /* keyExtractor={item => item.id.toString()} */
+          renderItem={({item}) => <ProductsCard2 data={item} onPress={handlePress} />}
         />
         {products.map((item, index) => {
           return (
-            <View key={item.id} style={{marginBottom: 10}}>
-              <ProductsCard data={item} />
+            <View  style={{marginBottom: 10}}>
+              <ProductsCard data={item} onPress={handlePress}/>
             </View>
           );
         })}
@@ -210,7 +120,7 @@ const HomeScreen = (props: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
+ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },

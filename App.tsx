@@ -16,6 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import axios from 'axios';
 
 import {
   Colors,
@@ -24,11 +25,27 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import HomeScreen from './src/screens/HomeScreen';
+import HomeScreen, { IProduct } from './src/screens/HomeScreen';
+import ProductScreen from './src/screens/ProductScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
+import {enableLatestRenderer} from 'react-native-maps';
+
+enableLatestRenderer();
+
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+type RootStackParamList = {
+  Home: undefined;
+  Product: { product: IProduct };
+};
+
+export type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Product'>;
+export type ProductScreenRouteProp = RouteProp<RootStackParamList,'Product'>;
 
 function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -56,6 +73,9 @@ function Section({children, title}: SectionProps): JSX.Element {
   );
 }
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -63,11 +83,17 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
   };
+  
 
   return (
+    <NavigationContainer>
     <SafeAreaView style={backgroundStyle}>
-      <HomeScreen />
+      <Stack.Navigator>
+        <Stack.Screen name="Home" options={{headerShown: false}} component={HomeScreen} />
+        <Stack.Screen name="Product" options={{headerShown: false}} component={ProductScreen} />
+      </Stack.Navigator>
     </SafeAreaView>
+    </NavigationContainer>
   );
 }
 

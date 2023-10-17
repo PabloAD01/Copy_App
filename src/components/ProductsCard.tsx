@@ -6,11 +6,12 @@ import LikeButton from './LikeButton';
 
 type Props = {
   data: IProduct;
+  onPress: (item: IProduct) => void;
 };
 
 
 
-const ProductsCard = ({data}: Props) => {
+const ProductsCard = ({data, onPress}: Props) => {
 
   const [playing, setPlaying] = useState(data?.like || false);
 
@@ -18,8 +19,12 @@ const ProductsCard = ({data}: Props) => {
     setPlaying(!playing);
   }
 
+  const handleOnPress = () => {
+    onPress(data);
+  }
+
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <TouchableOpacity style={styles.cardContainer} onPress={handleOnPress}>
       <Image
         source={{
           uri: "https://dummyimage.com/300"

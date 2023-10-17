@@ -5,9 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 
 type Props = {
   data: IProduct;
+  onPress: (item: IProduct) => void;
 };
 
-const ProductsCard2 = ({data}: Props) => {
+const ProductsCard2 = ({data, onPress}: Props) => {
+
+  const handleOnPress = () => {
+    onPress(data);
+  }
+  
   return (
     <TouchableOpacity
       style={{
@@ -15,7 +21,8 @@ const ProductsCard2 = ({data}: Props) => {
         padding: 2,
         backgroundColor: '#2CBCDF',
         width: 200
-      }}>
+      }}
+      onPress={handleOnPress}>
       <Image
         source={{
           uri: 'https://dummyimage.com/300',
