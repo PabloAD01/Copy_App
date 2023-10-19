@@ -1,5 +1,5 @@
-import {useRoute} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useEffect, memo} from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,9 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  Linking,
 } from 'react-native';
-import {ProductScreenRouteProp} from '../../App';
+import {ProductScreenNavigationProp, ProductScreenRouteProp} from '../../App';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Icon3 from 'react-native-vector-icons/Feather';
@@ -17,12 +18,16 @@ import LikeButton from '../components/LikeButton';
 import {ProductInfoDictionary} from '../dictionaries/ProductInfoDictionary';
 import MapView from 'react-native-maps';
 
-
 type Props = {};
 
 const ProductScreen = () => {
   const route = useRoute<ProductScreenRouteProp>();
   const {product} = route.params;
+
+  const navigation = useNavigation<ProductScreenNavigationProp>();
+  const handlePress = () => {
+    navigation.navigate('Map', {product: product});
+  };
 
   console.log(product);
   return (
@@ -116,24 +121,43 @@ const ProductScreen = () => {
             })}
           </View>
         )}
-        <View
-          style={{
-            paddingHorizontal: 5,
-            backgroundColor: 'white',
-            position: 'relative',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <MapView
-          style={{width: '100%', height: 120}}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
-        </View>
+        {product?.cords?.lat && product?.cords?.long ? (
+          <View
+            style={{
+              paddingHorizontal: 5,
+              backgroundColor: 'white',
+              position: 'relative',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MapView
+              style={{width: '100%', height: 120}}
+              initialRegion={{
+                latitude: product.cords.lat,
+                longitude: product.cords.long,
+                latitudeDelta: product.cords.latd,
+                longitudeDelta: product.cords.longd,
+              }}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              scrollEnabled={false}
+              zoomEnabled={false}
+            />
+            <TouchableOpacity
+              onPress={handlePress}
+              style={{
+                position: 'absolute',
+                backgroundColor: '#F48631',
+                padding: 10,
+              }}>
+              <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>
+                Ver ubicación
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          ''
+        )}
 
         <View style={{paddingHorizontal: 5, backgroundColor: 'white'}}>
           <View
@@ -173,7 +197,8 @@ const ProductScreen = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 5,
-          }}>
+          }}
+          onPress={() => Linking.openURL(`tel:${214636}`)}>
           <Icon3 name="phone" size={15} color={'white'} />
           <Text style={{color: 'white', fontSize: 15, fontWeight: '600'}}>
             Teléfono
@@ -228,4 +253,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductScreen;
+export default memo(ProductScreen);

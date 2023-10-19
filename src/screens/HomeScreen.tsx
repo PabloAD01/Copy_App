@@ -6,8 +6,8 @@ import {ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
-import { HomeScreenNavigationProp } from '../../App';
+import {useNavigation} from '@react-navigation/native';
+import {HomeScreenNavigationProp} from '../../App';
 import {Api, ApiP} from '../../Api';
 type Props = {};
 
@@ -17,6 +17,12 @@ export interface IProduct {
   price: string;
   uploaded?: string;
   location?: string;
+  cords?: {
+    long: number;
+    lat: number;
+    longd: number;
+    latd: number;
+  };
   like?: boolean;
   info?: {
     [key: string]: any;
@@ -24,12 +30,8 @@ export interface IProduct {
 }
 
 const HomeScreen = (props: Props) => {
-
   const [products, setProducts] = useState([]);
   const [products2, setProducts2] = useState([]);
-   
-  
-
 
   useEffect(() => {
     const getProducts = async () => {
@@ -37,7 +39,7 @@ const HomeScreen = (props: Props) => {
         const response = await fetch(Api);
         const data = await response.json();
         setProducts(data.products);
-      } catch (error:any) {
+      } catch (error: any) {
         console.error('Error fetching products:', error.message);
       }
       try {
@@ -50,22 +52,17 @@ const HomeScreen = (props: Props) => {
     };
 
     getProducts();
-
-
-
   }, []);
 
-  const navigation = useNavigation<HomeScreenNavigationProp>()
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
-  const handlePress = (products : IProduct) => {
+  const handlePress = (products: IProduct) => {
     navigation.navigate('Product', {product: products});
-    
-  }
-
+  };
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
           <TouchableOpacity>
             <Icon name="bars" size={20} color={'#fff'} />
@@ -85,7 +82,7 @@ const HomeScreen = (props: Props) => {
             <Icon2 name="dots-three-vertical" size={20} color={'#fff'} />
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
       <ScrollView style={styles.contentContainer} removeClippedSubviews={true}>
         <FlatList
           style={{}}
@@ -94,33 +91,24 @@ const HomeScreen = (props: Props) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingVertical: 10}}
           ItemSeparatorComponent={() => <View style={{width: 10}} />}
-          /* keyExtractor={item => item.id.toString()} */
-          renderItem={({item}) => <ProductsCard2 data={item} onPress={handlePress} />}
+          keyExtractor={item => item['_id']}
+          renderItem={({item}) => (
+            <ProductsCard2 data={item} onPress={handlePress} />
+          )}
         />
         {products.map((item, index) => {
           return (
-            <View  style={{marginBottom: 10}}>
-              <ProductsCard data={item} onPress={handlePress}/>
+            <View key={item['_id']} style={{marginBottom: 10}}>
+              <ProductsCard data={item} onPress={handlePress} />
             </View>
           );
         })}
       </ScrollView>
-      {/* <FlatList
-        style={styles.contentContainer}
-        data={products}
-        scrollEnabled={true}
-        contentContainerStyle={{paddingVertical: 10}}
-        ItemSeparatorComponent={() => <View style={{height: 10}} />}
-        showsVerticalScrollIndicator={true}
-        renderItem={({item}) => (
-
-        )}
-      /> */}
     </View>
   );
 };
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
