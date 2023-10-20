@@ -17,7 +17,7 @@ export interface IProduct {
   price: string;
   uploaded?: string;
   location?: string;
-  cords?: {
+  coords?: {
     long: number;
     lat: number;
     longd: number;

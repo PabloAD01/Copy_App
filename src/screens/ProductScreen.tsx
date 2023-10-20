@@ -29,12 +29,16 @@ const ProductScreen = () => {
     navigation.navigate('Map', {product: product});
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   console.log(product);
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleBack}>
             <Icon name="arrowleft" size={20} color={'#fff'} />
           </TouchableOpacity>
           <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
@@ -121,7 +125,7 @@ const ProductScreen = () => {
             })}
           </View>
         )}
-        {product?.cords?.lat && product?.cords?.long ? (
+        {product?.coords?.lat && product?.coords?.long ? (
           <View
             style={{
               paddingHorizontal: 5,
@@ -133,10 +137,10 @@ const ProductScreen = () => {
             <MapView
               style={{width: '100%', height: 120}}
               initialRegion={{
-                latitude: product.cords.lat,
-                longitude: product.cords.long,
-                latitudeDelta: product.cords.latd,
-                longitudeDelta: product.cords.longd,
+                latitude: product.coords.lat,
+                longitude: product.coords.long,
+                latitudeDelta: product.coords.latd,
+                longitudeDelta: product.coords.longd,
               }}
               pitchEnabled={false}
               rotateEnabled={false}

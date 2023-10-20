@@ -23,10 +23,10 @@ type Props = {};
 const MapScreen = () => {
   const route = useRoute<MapScreenRouteProp>();
   const {product} = route.params;
-  console.log('Lat', product.cords?.lat);
-  console.log('Long', product.cords?.long);
-  console.log('Latd', product.cords?.latd);
-  console.log('Longd', product.cords?.longd);
+  console.log('Lat', product.coords?.lat);
+  console.log('Long', product.coords?.long);
+  console.log('Latd', product.coords?.latd);
+  console.log('Longd', product.coords?.longd);
 
   return (
     <View style={styles.mainContainer}>
@@ -49,14 +49,14 @@ const MapScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {product.cords && (
+          {product.coords && (
             <MapView
               style={{width: '100%', height: '100%'}}
               initialRegion={{
-                latitude: product.cords.lat,
-                longitude: product.cords.long,
-                latitudeDelta: product.cords.latd,
-                longitudeDelta: product.cords.longd,
+                latitude: product.coords.lat,
+                longitude: product.coords.long,
+                latitudeDelta: product.coords.latd,
+                longitudeDelta: product.coords.longd,
               }}>
               <Circle
                 center={{
