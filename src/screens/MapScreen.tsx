@@ -1,38 +1,35 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Linking,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Linking} from 'react-native';
 import {MapScreenRouteProp} from '../../App';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Icon2 from 'react-native-vector-icons/Entypo';
 import Icon3 from 'react-native-vector-icons/Feather';
 import Icon4 from 'react-native-vector-icons/Entypo';
-import LikeButton from '../components/LikeButton';
-import {ProductInfoDictionary} from '../dictionaries/ProductInfoDictionary';
 import MapView, {Circle, Marker} from 'react-native-maps';
+import {CommonActions} from '@react-navigation/native';
 
 type Props = {};
 
 const MapScreen = () => {
   const route = useRoute<MapScreenRouteProp>();
   const {product} = route.params;
+
+  const navigation = useNavigation();
+
   console.log('Lat', product.coords?.lat);
   console.log('Long', product.coords?.long);
   console.log('Latd', product.coords?.latd);
   console.log('Longd', product.coords?.longd);
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleBack}>
             <Icon name="arrowleft" size={20} color={'#fff'} />
           </TouchableOpacity>
           <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
