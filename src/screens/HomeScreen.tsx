@@ -62,27 +62,6 @@ const HomeScreen = (props: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      {/* <View style={styles.headerContainer}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
-          <TouchableOpacity>
-            <Icon name="bars" size={20} color={'#fff'} />
-          </TouchableOpacity>
-          <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
-            Avisos
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
-          <TouchableOpacity>
-            <Icon name="bell-o" size={25} color={'#fff'} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon3 name="magnify" size={25} color={'#fff'} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Icon2 name="dots-three-vertical" size={20} color={'#fff'} />
-          </TouchableOpacity>
-        </View>
-      </View> */}
       <ScrollView style={styles.contentContainer} removeClippedSubviews={true}>
         <FlatList
           style={{}}
@@ -112,16 +91,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  headerContainer: {
-    height: '8%',
-    backgroundColor: '#FF842C',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-  },
   contentContainer: {
-    height: '92%',
     paddingHorizontal: 3,
   },
 });

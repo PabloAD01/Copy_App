@@ -58,10 +58,7 @@ export type ProductScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Map'
 >;
-export type MapScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Product'
->;
+
 export type ProductScreenRouteProp = RouteProp<RootStackParamList, 'Product'>;
 export type MapScreenRouteProp = RouteProp<RootStackParamList, 'Map'>;
 

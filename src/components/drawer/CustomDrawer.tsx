@@ -1,15 +1,31 @@
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
-import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+  Modal,
+  StyleSheet,
+} from 'react-native';
+import FacebookButton from '../buttons/socials/FacebookButton';
+import YoutubeButton from '../buttons/socials/YoutubeButton';
+import LinkedinButton from '../buttons/socials/LinkedinButton';
+import InstagramButton from '../buttons/socials/InstagramButton';
+import GooglePlayButton from '../buttons/socials/GooglePlayButton';
+import AdsButton from '../buttons/options/AdsButton';
+import PostAdButton from '../buttons/options/PostAdButton';
+import ChatButton from '../buttons/options/ChatButton';
+import MyAccountButton from '../buttons/options/MyAccountButton';
+import CustomerServiceButton from '../buttons/options/CustomerServiceButton';
+import GeneralInfoButton from '../buttons/options/GeneralInfoButton';
+import LoginModal from '../modals/LoginModal';
 
 type Props = {};
 
 const CustomDrawer = (props: DrawerContentComponentProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={{flex: 1, backgroundColor: 'white', gap: 10}}>
       <View
@@ -19,7 +35,6 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
           borderBottomEndRadius: 40,
           justifyContent: 'center',
           alignItems: 'center',
-
           paddingHorizontal: 25,
         }}>
         <Image
@@ -31,220 +46,46 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
           style={{
             width: '100%',
             backgroundColor: '#32589F',
-            padding: 10,
+            padding: 14,
             borderRadius: 30,
             alignItems: 'center',
-          }}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>
+          }}
+          onPress={() => setModalVisible(true)}>
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: '500',
+              letterSpacing: 1,
+              fontSize: 12,
+            }}>
             INGRESAR A MI CUENTA
           </Text>
         </TouchableOpacity>
+        <LoginModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
       </View>
       <View style={{paddingHorizontal: 10, backgroundColor: 'white', gap: 10}}>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            flexDirection: 'row',
-            borderRadius: 5,
-            padding: 10,
-          }}>
-          <Feather name="box" size={20} color={'#6A6A6A'} style={{flex: 1}} />
-          <Text
-            style={{
-              color: '#6A6A6A',
-              fontSize: 15,
-              fontWeight: '400',
-              flex: 4,
-            }}>
-            Avisos
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            flexDirection: 'row',
-            borderRadius: 5,
-            padding: 10,
-          }}>
-          <FontAwesome
-            name="edit"
-            size={20}
-            color={'#6A6A6A'}
-            style={{flex: 1}}
-          />
-          <Text
-            style={{
-              color: '#6A6A6A',
-              fontSize: 15,
-              fontWeight: '400',
-              flex: 4,
-            }}>
-            Publicar aviso
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            flexDirection: 'row',
-            borderRadius: 5,
-            padding: 10,
-          }}>
-          <Entypo name="chat" size={20} color={'#6A6A6A'} style={{flex: 1}} />
-          <Text
-            style={{
-              color: '#6A6A6A',
-              fontSize: 15,
-              fontWeight: '400',
-              flex: 4,
-            }}>
-            Chat
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            flexDirection: 'row',
-            borderRadius: 5,
-            padding: 10,
-          }}>
-          <FontAwesome
-            name="user-circle-o"
-            size={20}
-            color={'#6A6A6A'}
-            style={{flex: 1}}
-          />
-          <Text
-            style={{
-              color: '#6A6A6A',
-              fontSize: 15,
-              fontWeight: '400',
-              flex: 4,
-            }}>
-            Mi cuenta
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            flexDirection: 'row',
-            borderRadius: 5,
-            padding: 10,
-          }}>
-          <Octicons
-            name="shield-check"
-            size={20}
-            color={'#6A6A6A'}
-            style={{flex: 1}}
-          />
-          <Text
-            style={{
-              color: '#6A6A6A',
-              fontSize: 15,
-              fontWeight: '400',
-              flex: 4,
-            }}>
-            Servicio al cliente
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            flexDirection: 'row',
-            borderRadius: 5,
-            padding: 10,
-          }}>
-          <Octicons name="info" size={20} color={'#6A6A6A'} style={{flex: 1}} />
-          <Text
-            style={{
-              color: '#6A6A6A',
-              fontSize: 15,
-              fontWeight: '400',
-              flex: 4,
-            }}>
-            Información general
-          </Text>
-        </TouchableOpacity>
+        <AdsButton />
+        <PostAdButton />
+        <ChatButton />
+        <MyAccountButton />
+        <CustomerServiceButton />
+        <GeneralInfoButton />
       </View>
       <View
         style={{
-          paddingHorizontal: 5,
+          paddingHorizontal: 10,
           backgroundColor: 'white',
           gap: 5,
           flexDirection: 'row',
         }}>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 5,
-            flex: 1,
-          }}>
-          <Feather name="instagram" size={20} color={'#6A6A6A'} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 5,
-            flex: 1,
-          }}>
-          <Ionicons name="logo-facebook" size={20} color={'#6A6A6A'} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 5,
-            flex: 1,
-          }}>
-          <FontAwesome name="youtube-play" size={20} color={'#6A6A6A'} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 5,
-            flex: 1,
-          }}>
-          <FontAwesome name="linkedin-square" size={20} color={'#6A6A6A'} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#e5e3e3',
-            backgroundColor: '#F8F8F8',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 10,
-            borderRadius: 5,
-            flex: 1,
-          }}>
-          <Entypo name="google-play" size={20} color={'#6A6A6A'} />
-        </TouchableOpacity>
+        <InstagramButton />
+        <FacebookButton />
+        <YoutubeButton />
+        <LinkedinButton />
+        <GooglePlayButton />
       </View>
     </View>
   );
