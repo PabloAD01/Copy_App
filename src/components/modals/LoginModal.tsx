@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   Alert,
@@ -6,16 +6,55 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import * as Yup from 'yup';
+import {Formik} from 'formik';
+import {ApiL} from '../../../Api';
 
 type Props = {
   modalVisible: boolean;
   setModalVisible: (modalVisible: boolean) => void;
 };
 
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
+
 const LoginModal = ({modalVisible, setModalVisible}: Props) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${ApiL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email, password}),
+      });
+
+      if (response.ok) {
+        // El inicio de sesión fue exitoso
+        // Puedes manejar la respuesta aquí, por ejemplo, cerrar el modal
+        setModalVisible(false);
+      } else {
+        // El inicio de sesión falló
+        const data = await response.json();
+        setError(data.msg || 'Error de inicio de sesión');
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -25,55 +64,93 @@ const LoginModal = ({modalVisible, setModalVisible}: Props) => {
         Alert.alert('Modal has been closed.');
         setModalVisible(!modalVisible);
       }}>
-      <View
-        style={{
-          height: '100%',
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          justifyContent: 'center',
+      <Formik
+        initialValues={{email: '', password: ''}}
+        validationSchema={LoginSchema}
+        onSubmit={values => {
+          console.log(values);
         }}>
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>INGRESAR</Text>
-          <View style={{width: '100%', gap: 10}}>
-            <Text>Conectar con</Text>
-            <TouchableOpacity
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <KeyboardAvoidingView
+            behavior={Platform.select({ios: 'padding', android: 'height'})}
+            style={{flex: 1}}>
+            <View
               style={{
-                borderWidth: 1,
-                borderColor: '#e5e3e3',
-                backgroundColor: '#0062E2',
-                flexDirection: 'row',
-                borderRadius: 5,
-                padding: 8,
+                height: '100%',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
               }}>
-              <Ionicons name="logo-facebook" size={20} color={'white'} />
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 15,
-                  fontWeight: '600',
-                  flex: 4,
-                  textAlign: 'center',
+              <Formik
+                initialValues={{email: '', password: ''}}
+                onSubmit={values => {
+                  // Handle form submission here
+                  // values object contains validated form values
+                  console.log(values);
                 }}>
-                Facebook
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{width: '100%', gap: 10}}>
-            <TextInput
-              placeholder="Email"
-              style={{height: 40, width: '100%', borderBottomWidth: 1}}
-            />
-            <TextInput
-              placeholder="Contraseña"
-              style={{height: 40, width: '100%', borderBottomWidth: 1}}
-            />
-          </View>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text style={styles.textStyle}>Hide Modal</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>INGRESAR</Text>
+                  <View style={{width: '100%', gap: 10}}>
+                    <Text>Conectar con</Text>
+                    <TouchableOpacity
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#e5e3e3',
+                        backgroundColor: '#4081EC',
+                        flexDirection: 'row',
+                        borderRadius: 5,
+                        padding: 8,
+                      }}>
+                      <AntDesign name="google" size={20} color={'white'} />
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 15,
+                          fontWeight: '600',
+                          flex: 4,
+                          textAlign: 'center',
+                        }}>
+                        Sign in with Google
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{width: '100%', gap: 10}}>
+                    <TextInput
+                      placeholder="Email"
+                      style={{height: 40, width: '100%', borderBottomWidth: 1}}
+                      onChangeText={text => setEmail(text)}
+                      value={email}
+                    />
+                    {error && <Text style={styles.errorText}>{error}</Text>}
+                    <TextInput
+                      placeholder="Password"
+                      style={{height: 40, width: '100%', borderBottomWidth: 1}}
+                      onChangeText={text => setPassword(text)}
+                      value={password}
+                      secureTextEntry
+                    />
+                    {touched.password && errors.password && (
+                      <Text style={styles.errorText}>{errors.password}</Text>
+                    )}
+                  </View>
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={handleLogin}>
+                    <Text style={styles.textStyle}>Iniciar Sesión</Text>
+                  </TouchableOpacity>
+                </View>
+              </Formik>
+            </View>
+          </KeyboardAvoidingView>
+        )}
+      </Formik>
+      {/*  */}
     </Modal>
   );
 };
@@ -85,7 +162,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    height: '50%',
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 8,
@@ -99,7 +175,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    justifyContent: 'space-between',
+    gap: 10,
   },
   button: {
     width: '100%',
@@ -126,6 +202,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     padding: 10,
     borderColor: '#FF6205',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 5,
   },
 });
 

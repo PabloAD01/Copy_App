@@ -8,6 +8,8 @@ import {
   Alert,
   Modal,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import FacebookButton from '../buttons/socials/FacebookButton';
 import YoutubeButton from '../buttons/socials/YoutubeButton';
@@ -30,7 +32,7 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
     <View style={{flex: 1, backgroundColor: 'white', gap: 10}}>
       <View
         style={{
-          height: '20%',
+          height: 180,
           backgroundColor: '#FF6205',
           borderBottomEndRadius: 40,
           justifyContent: 'center',
