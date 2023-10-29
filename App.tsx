@@ -37,6 +37,7 @@ import type {RouteProp} from '@react-navigation/native';
 import {enableLatestRenderer} from 'react-native-maps';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawer from './src/components/drawer/CustomDrawer';
+import AuthProvider from './src/providers/AuthProvider';
 
 enableLatestRenderer();
 
@@ -74,38 +75,40 @@ function App(): JSX.Element {
   };
 
   return (
-    <NavigationContainer>
-      <SafeAreaView style={backgroundStyle}>
-        <Drawer.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            swipeEnabled: false,
-          }}
-          drawerContent={props => <CustomDrawer {...props} />}>
-          <Drawer.Screen
-            name="Home"
-            options={{
-              title: 'Avisos',
-              headerStyle: {
-                backgroundColor: '#FF842C',
-              },
-              headerTintColor: '#fff',
+    <AuthProvider>
+      <NavigationContainer>
+        <SafeAreaView style={backgroundStyle}>
+          <Drawer.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              swipeEnabled: false,
             }}
-            component={HomeScreen}
-          />
-          <Drawer.Screen
-            name="Product"
-            options={{headerShown: false}}
-            component={ProductScreen}
-          />
-          <Drawer.Screen
-            name="Map"
-            options={{headerShown: false}}
-            component={MapScreen}
-          />
-        </Drawer.Navigator>
-      </SafeAreaView>
-    </NavigationContainer>
+            drawerContent={props => <CustomDrawer {...props} />}>
+            <Drawer.Screen
+              name="Home"
+              options={{
+                title: 'Avisos',
+                headerStyle: {
+                  backgroundColor: '#FF842C',
+                },
+                headerTintColor: '#fff',
+              }}
+              component={HomeScreen}
+            />
+            <Drawer.Screen
+              name="Product"
+              options={{headerShown: false}}
+              component={ProductScreen}
+            />
+            <Drawer.Screen
+              name="Map"
+              options={{headerShown: false}}
+              component={MapScreen}
+            />
+          </Drawer.Navigator>
+        </SafeAreaView>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 

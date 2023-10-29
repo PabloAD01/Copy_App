@@ -22,7 +22,8 @@ import ChatButton from '../buttons/options/ChatButton';
 import MyAccountButton from '../buttons/options/MyAccountButton';
 import CustomerServiceButton from '../buttons/options/CustomerServiceButton';
 import GeneralInfoButton from '../buttons/options/GeneralInfoButton';
-import LoginModal from '../modals/LoginModal';
+import AuthModal from '../modals/AuthModal';
+import {NavigationContainer} from '@react-navigation/native';
 
 type Props = {};
 
@@ -63,10 +64,6 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
             INGRESAR A MI CUENTA
           </Text>
         </TouchableOpacity>
-        <LoginModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
       </View>
       <View style={{paddingHorizontal: 10, backgroundColor: 'white', gap: 10}}>
         <AdsButton />
@@ -89,6 +86,12 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
         <LinkedinButton />
         <GooglePlayButton />
       </View>
+      <NavigationContainer independent>
+        <AuthModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
+      </NavigationContainer>
     </View>
   );
 };
