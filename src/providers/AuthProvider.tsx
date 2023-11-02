@@ -1,5 +1,5 @@
 import React, {createContext, useState} from 'react';
-import {ApiL} from '../../Api';
+import {ApiAuth} from '../../Api';
 
 type Props = {
   children: React.ReactNode;
@@ -7,6 +7,13 @@ type Props = {
 
 export const AuthContext = createContext({
   LoginWithEmailAndPassword: (email: string, password: string) => {},
+  Register: (
+    email: string,
+    password: string,
+    name: string,
+    lastName: string,
+    location: string,
+  ) => {},
   loggedIn: false,
   setLoggedIn: (loggedIn: boolean) => {},
   setLoginHeight: (loginHeight: number) => {},
@@ -21,7 +28,7 @@ const AuthProvider = (props: Props) => {
 
   const LoginWithEmailAndPassword = async (email: string, password: string) => {
     try {
-      const response = await fetch(ApiL, {
+      const response = await fetch(ApiAuth + '/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,10 +51,37 @@ const AuthProvider = (props: Props) => {
     }
   };
 
+  const Register = async (
+    email: string,
+    password: string,
+    name: string,
+    lastName: string,
+    location: string,
+  ) => {
+    try {
+      const response = await fetch(ApiAuth + '/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email, password, name, lastName, location}),
+      });
+
+      if (response.ok) {
+        setEmail(email);
+        setLoggedIn(true);
+        const data = await response.json();
+        console.log(data.msg);
+      }
+    } catch (error) {
+      console.error('Error hacer registro:', error);
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
         LoginWithEmailAndPassword,
+        Register,
         loggedIn,
         setLoggedIn,
         setLoginHeight,

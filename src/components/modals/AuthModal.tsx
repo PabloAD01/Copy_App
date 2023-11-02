@@ -117,9 +117,11 @@ const AuthModal = ({modalVisible, setModalVisible}: Props) => {
         <TouchableOpacity
           activeOpacity={1}
           style={styles.centeredView}
-          onPress={() => setModalVisible(false)}>
+          onPress={() => {
+            setModalVisible(false), Keyboard.dismiss();
+          }}>
           {/*   <TouchableHighlight style={styles.modalView}> */}
-          <View
+          <TouchableHighlight
             style={[
               styles.modalView,
               {height: loginHeight, overflow: 'hidden'},
@@ -138,7 +140,7 @@ const AuthModal = ({modalVisible, setModalVisible}: Props) => {
                 />
               </Stack.Navigator>
             </NavigationContainer>
-          </View>
+          </TouchableHighlight>
           {/* </TouchableHighlight> */}
         </TouchableOpacity>
       </KeyboardAvoidingView>

@@ -28,6 +28,7 @@ import {
 import HomeScreen, {IProduct} from './src/screens/HomeScreen';
 import ProductScreen from './src/screens/ProductScreen';
 import MapScreen from './src/screens/MapScreen';
+import PostAd from './src/screens/PostAdScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -49,6 +50,7 @@ type RootStackParamList = {
   Home: undefined;
   Product: {product: IProduct};
   Map: {product: IProduct};
+  PostAd: undefined;
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -104,6 +106,17 @@ function App(): JSX.Element {
               name="Map"
               options={{headerShown: false}}
               component={MapScreen}
+            />
+            <Drawer.Screen
+              name="PostAd"
+              options={{
+                title: 'Publicar aviso',
+                headerStyle: {
+                  backgroundColor: '#FF842C',
+                },
+                headerTintColor: '#fff',
+              }}
+              component={PostAd}
             />
           </Drawer.Navigator>
         </SafeAreaView>

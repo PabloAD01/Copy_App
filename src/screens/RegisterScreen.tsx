@@ -14,7 +14,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../providers/AuthProvider';
 import {
   LoginScreenNavigationProp,
@@ -23,14 +23,31 @@ import {
 
 type Props = {};
 
-const LoginSchema = Yup.object().shape({
+const RegisterSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  password: Yup.string().min(8).required('Password is required'),
+  name: Yup.string().required('Name is required').required('Name is required'),
+  lastName: Yup.string()
+    .required('Last Name is required')
+    .required('Last Name is required'),
+  location: Yup.string()
+    .required('Location is required')
+    .required('Location is required'),
 });
 
 const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
-  const {LoginWithEmailAndPassword, setLoginHeight} = useContext(AuthContext);
+  const {Register, setLoginHeight} = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
+  const [reRender, setReRender] = useState(false);
+
+  const focused = useIsFocused();
+
+  useEffect(() => {
+    console.log('reRender');
+    setTimeout(() => {
+      setReRender(prevState => !prevState);
+    }, 1000);
+  }, [focused]);
 
   const toggleScreen = () => {
     navigation.replace('Login');
@@ -41,14 +58,48 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
     setLoginHeight(height);
   };
 
-  const handleLogin = async (values: {email: string; password: string}) => {
+  const handleRegister = async (values: {
+    email: string;
+    password: string;
+    name: string;
+    lastName: string;
+    location: string;
+  }) => {
     try {
-      const {email, password} = values;
-      const response = await LoginWithEmailAndPassword(email, password);
+      const {email, password, name, lastName, location} = values;
+      const response = await Register(
+        email,
+        password,
+        name,
+        lastName,
+        location,
+      );
     } catch (error) {
       console.log(error);
     }
   };
+
+  /*
+
+  cambiar contenido del fetch para el registro
+  cambiar las API en una sola API general y solo cambiar la ultima ruta
+
+  Añadir los elementos faltantes para el registro
+  name: String,
+  lastName: {
+    type: String,
+    default: "lastName",
+  },
+  location: {
+    type: String,
+    default: "Somewhere",
+  },
+
+  Agregar la vista de creacion de articulos o productos 
+  se tiene que poder subir imagenes para el articulo
+  
+
+  */
 
   return (
     <View onLayout={onLayout} style={{backgroundColor: 'white', padding: 20}}>
@@ -78,9 +129,15 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
         </TouchableOpacity>
       </View>
       <Formik
-        initialValues={{email: '', password: ''}}
-        validationSchema={LoginSchema}
-        onSubmit={handleLogin}>
+        initialValues={{
+          email: '',
+          password: '',
+          name: '',
+          lastName: '',
+          location: '',
+        }}
+        validationSchema={RegisterSchema}
+        onSubmit={handleRegister}>
         {({
           handleChange,
           handleBlur,
@@ -90,6 +147,47 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
           touched,
         }) => (
           <View style={{width: '100%', gap: 10}}>
+            <TextInput
+              placeholder="Name"
+              style={{height: 40, width: '100%', borderBottomWidth: 1}}
+              onChangeText={text => {
+                handleChange('name')(text);
+                setError(null);
+              }}
+              onBlur={handleBlur('name')}
+              value={values.name}
+            />
+            {touched.name && errors.name && (
+              <Text style={styles.errorText}>{errors.name}</Text>
+            )}
+
+            <TextInput
+              placeholder="Last Name"
+              style={{height: 40, width: '100%', borderBottomWidth: 1}}
+              onChangeText={text => {
+                handleChange('lastName')(text);
+                setError(null);
+              }}
+              onBlur={handleBlur('lastName')}
+              value={values.lastName}
+            />
+            {touched.lastName && errors.lastName && (
+              <Text style={styles.errorText}>{errors.lastName}</Text>
+            )}
+
+            <TextInput
+              placeholder="Location"
+              style={{height: 40, width: '100%', borderBottomWidth: 1}}
+              onChangeText={text => {
+                handleChange('location')(text);
+                setError(null);
+              }}
+              onBlur={handleBlur('location')}
+              value={values.location}
+            />
+            {touched.location && errors.location && (
+              <Text style={styles.errorText}>{errors.location}</Text>
+            )}
             <TextInput
               placeholder="Email"
               style={{height: 40, width: '100%', borderBottomWidth: 1}}
@@ -115,11 +213,11 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
               value={values.password}
               secureTextEntry
             />
-
             {touched.password && errors.password && (
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
             {error && <Text style={styles.errorText}>{error}</Text>}
+
             <TouchableOpacity
               style={[styles.button, styles.buttonClose]}
               onPress={() => handleSubmit()}>

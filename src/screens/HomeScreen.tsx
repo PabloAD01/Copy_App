@@ -8,7 +8,7 @@ import Icon2 from 'react-native-vector-icons/Entypo';
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import {HomeScreenNavigationProp} from '../../App';
-import {Api, ApiP} from '../../Api';
+import {Api} from '../../Api';
 type Props = {};
 
 export interface IProduct {
@@ -36,14 +36,14 @@ const HomeScreen = (props: Props) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await fetch(Api);
+        const response = await fetch(Api + '/products');
         const data = await response.json();
         setProducts(data.products);
       } catch (error: any) {
         console.error('Error fetching products:', error.message);
       }
       try {
-        const response = await fetch(ApiP);
+        const response = await fetch(Api + '/premium_products');
         const data = await response.json();
         setProducts2(data.products);
       } catch (error) {
