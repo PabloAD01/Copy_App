@@ -1,11 +1,14 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import {ApiAuth} from '../../Api';
+import {ApiU} from '../../Api';
 
 type Props = {
   children: React.ReactNode;
 };
 
 export const AuthContext = createContext({
+  name: '',
+  email: '',
   LoginWithEmailAndPassword: (email: string, password: string) => {},
   Register: (
     email: string,
@@ -26,6 +29,21 @@ const AuthProvider = (props: Props) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginHeight, setLoginHeight] = useState(500);
 
+  useEffect(() => {
+    const getProfile = async () => {
+      try {
+        const response = await fetch(ApiU + '/current-user');
+        const data = await response.json();
+        setName(data.user.name);
+        setEmail(data.user.email);
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getProfile();
+  }, []);
+
   const LoginWithEmailAndPassword = async (email: string, password: string) => {
     try {
       const response = await fetch(ApiAuth + '/login', {
@@ -37,7 +55,6 @@ const AuthProvider = (props: Props) => {
       });
 
       if (response.ok) {
-        setEmail(email);
         setLoggedIn(true);
         const data = await response.json();
         console.log(data.msg);
@@ -80,6 +97,8 @@ const AuthProvider = (props: Props) => {
   return (
     <AuthContext.Provider
       value={{
+        name,
+        email,
         LoginWithEmailAndPassword,
         Register,
         loggedIn,

@@ -17,6 +17,7 @@ import {Formik} from 'formik';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../providers/AuthProvider';
 import {LoginScreenNavigationProp} from '../components/modals/AuthModal';
+import {HomeScreenNavigationProp} from '../../App';
 
 type Props = {};
 

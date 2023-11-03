@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import {HomeScreenNavigationProp} from '../../../../App';
+import {AuthContext} from '../../../providers/AuthProvider';
 
-type Props = {};
+type Props = {
+  modalVisible: boolean;
+  setModalVisible: (modalVisible: boolean) => void;
+};
 
-const PostAdButton = (props: Props) => {
+const PostAdButton = ({modalVisible, setModalVisible}: Props) => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const {loggedIn} = useContext(AuthContext);
 
   const handlePress = () => {
+    if (!loggedIn) {
+      setModalVisible(true);
+      return;
+    }
+
     navigation.navigate('PostAd');
   };
 

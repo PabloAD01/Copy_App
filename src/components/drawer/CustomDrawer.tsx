@@ -1,5 +1,5 @@
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -24,10 +24,12 @@ import CustomerServiceButton from '../buttons/options/CustomerServiceButton';
 import GeneralInfoButton from '../buttons/options/GeneralInfoButton';
 import AuthModal from '../modals/AuthModal';
 import {NavigationContainer} from '@react-navigation/native';
+import {AuthContext} from '../../providers/AuthProvider';
 
 type Props = {};
 
 const CustomDrawer = (props: DrawerContentComponentProps) => {
+  const {loggedIn, name, email} = useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={{flex: 1, backgroundColor: 'white', gap: 10}}>
@@ -45,29 +47,51 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
           style={{width: 100, height: 100}}
           resizeMode="contain"
         />
-        <TouchableOpacity
-          style={{
-            width: '100%',
-            backgroundColor: '#32589F',
-            padding: 14,
-            borderRadius: 30,
-            alignItems: 'center',
-          }}
-          onPress={() => setModalVisible(true)}>
-          <Text
+        {loggedIn ? (
+          <View
             style={{
-              color: 'white',
-              fontWeight: '500',
-              letterSpacing: 1,
-              fontSize: 12,
+              gap: 10,
+              alignItems: 'flex-start',
+              width: '100%',
             }}>
-            INGRESAR A MI CUENTA
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                textTransform: 'capitalize',
+              }}>
+              {name}
+            </Text>
+            <Text style={{color: 'white', fontWeight: '500'}}>{email}</Text>
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={{
+              width: '100%',
+              backgroundColor: '#32589F',
+              padding: 14,
+              borderRadius: 30,
+              alignItems: 'center',
+            }}
+            onPress={() => setModalVisible(true)}>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: '500',
+                letterSpacing: 1,
+                fontSize: 12,
+              }}>
+              INGRESAR A MI CUENTA
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={{paddingHorizontal: 10, backgroundColor: 'white', gap: 10}}>
         <AdsButton />
-        <PostAdButton />
+        <PostAdButton
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
         <ChatButton />
         <MyAccountButton />
         <CustomerServiceButton />
