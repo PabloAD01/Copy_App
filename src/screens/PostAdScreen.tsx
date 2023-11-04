@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -13,12 +14,22 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {HomeScreenNavigationProp} from '../../App';
+import {GlobalContext} from '../providers/GlobalProvider';
 
 type Props = {};
 
 const PostAdScreen = (props: Props) => {
   const [titlePosition, setTitlePosition] = useState(26);
   const [textInputValue, setTextInputValue] = useState('');
+
+  const {region} = useContext(GlobalContext);
+
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const handleLocations = () => {
+    navigation.navigate('Locations');
+  };
 
   const handleTextInputChange = (text: string) => {
     setTextInputValue(text);
@@ -32,10 +43,8 @@ const PostAdScreen = (props: Props) => {
 
   return (
     <KeyboardAvoidingView
-      style={{flex: 1, backgroundColor: '#EDECEA'}}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
-      <ScrollView>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView style={{height: '100%'}}>
         <View
           style={{
             width: '100%',
@@ -159,14 +168,13 @@ const PostAdScreen = (props: Props) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-            }}>
+            }}
+            onPress={handleLocations}>
             <View>
               <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
                 Ubicación
               </Text>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>
-                Punta Arenas
-              </Text>
+              <Text style={{color: 'black', fontWeight: 'bold'}}></Text>
             </View>
             <AntDesign name="right" size={14} color="black" />
           </TouchableOpacity>
@@ -209,11 +217,12 @@ const PostAdScreen = (props: Props) => {
                 position: 'absolute',
                 zIndex: 99999,
                 left: 26,
-                top: titlePosition,
+                top: 26,
               }}>
               Descripción
             </Text>
             <TextInput
+              multiline
               style={{
                 height: 40,
                 borderColor: 'gray',

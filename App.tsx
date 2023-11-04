@@ -29,6 +29,7 @@ import HomeScreen, {IProduct} from './src/screens/HomeScreen';
 import ProductScreen from './src/screens/ProductScreen';
 import MapScreen from './src/screens/MapScreen';
 import PostAd from './src/screens/PostAdScreen';
+import Locations from './src/screens/Locations';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -39,6 +40,8 @@ import {enableLatestRenderer} from 'react-native-maps';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawer from './src/components/drawer/CustomDrawer';
 import AuthProvider from './src/providers/AuthProvider';
+import GlobalProvider from './src/providers/GlobalProvider';
+import {HeaderBackButton} from '@react-navigation/elements';
 
 enableLatestRenderer();
 
@@ -51,6 +54,7 @@ type RootStackParamList = {
   Product: {product: IProduct};
   Map: {product: IProduct};
   PostAd: undefined;
+  Locations: undefined;
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -78,49 +82,71 @@ function App(): JSX.Element {
 
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <SafeAreaView style={backgroundStyle}>
-          <Drawer.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              swipeEnabled: false,
-            }}
-            drawerContent={props => <CustomDrawer {...props} />}>
-            <Drawer.Screen
-              name="Home"
-              options={{
-                title: 'Avisos',
-                headerStyle: {
-                  backgroundColor: '#FF842C',
-                },
-                headerTintColor: '#fff',
+      <GlobalProvider>
+        <NavigationContainer>
+          <SafeAreaView style={backgroundStyle}>
+            <Drawer.Navigator
+              initialRouteName="Home"
+              screenOptions={{
+                swipeEnabled: false,
               }}
-              component={HomeScreen}
-            />
-            <Drawer.Screen
-              name="Product"
-              options={{headerShown: false}}
-              component={ProductScreen}
-            />
-            <Drawer.Screen
-              name="Map"
-              options={{headerShown: false}}
-              component={MapScreen}
-            />
-            <Drawer.Screen
-              name="PostAd"
-              options={{
-                title: 'Publicar aviso',
-                headerStyle: {
-                  backgroundColor: '#FF842C',
-                },
-                headerTintColor: '#fff',
-              }}
-              component={PostAd}
-            />
-          </Drawer.Navigator>
-        </SafeAreaView>
-      </NavigationContainer>
+              drawerContent={props => <CustomDrawer {...props} />}>
+              <Drawer.Screen
+                name="Home"
+                options={{
+                  title: 'Avisos',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                }}
+                component={HomeScreen}
+              />
+              <Drawer.Screen
+                name="Product"
+                options={{headerShown: false}}
+                component={ProductScreen}
+              />
+              <Drawer.Screen
+                name="Map"
+                options={{headerShown: false}}
+                component={MapScreen}
+              />
+              <Drawer.Screen
+                name="PostAd"
+                options={{
+                  title: 'Publicar aviso',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                }}
+                component={PostAd}
+              />
+              <Drawer.Screen
+                name="Locations"
+                options={({navigation}) => ({
+                  title: 'Ubicación',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  lazy: true,
+                  headerTintColor: '#fff',
+                  headerLeft: () => (
+                    <HeaderBackButton
+                      onPress={() => {
+                        navigation.goBack();
+                      }}
+                      tintColor="#fff"
+                    />
+                  ),
+                })}
+                component={Locations}
+              />
+            </Drawer.Navigator>
+          </SafeAreaView>
+        </NavigationContainer>
+      </GlobalProvider>
     </AuthProvider>
   );
 }
