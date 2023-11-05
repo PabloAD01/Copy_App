@@ -10,7 +10,7 @@ export const GlobalContext = createContext({
 });
 
 const GlobalProvider = (props: Props) => {
-  const [region, setRegion] = useState({});
+  const [region, setRegion] = useState('');
 
   return (
     <GlobalContext.Provider value={{region, setRegion}}>

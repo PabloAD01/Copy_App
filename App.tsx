@@ -29,7 +29,7 @@ import HomeScreen, {IProduct} from './src/screens/HomeScreen';
 import ProductScreen from './src/screens/ProductScreen';
 import MapScreen from './src/screens/MapScreen';
 import PostAd from './src/screens/PostAdScreen';
-import Locations from './src/screens/Locations';
+import Locations from './src/screens/LocationsScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
