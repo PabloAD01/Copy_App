@@ -54,7 +54,7 @@ type RootStackParamList = {
   Product: {product: IProduct};
   Map: {product: IProduct};
   PostAd: undefined;
-  Locations: undefined;
+  Locations: {setLocation: (region: string) => void};
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -130,12 +130,11 @@ function App(): JSX.Element {
                   headerStyle: {
                     backgroundColor: '#FF842C',
                   },
-                  lazy: true,
                   headerTintColor: '#fff',
                   headerLeft: () => (
                     <HeaderBackButton
                       onPress={() => {
-                        navigation.goBack();
+                        navigation.navigate('PostAd');
                       }}
                       tintColor="#fff"
                     />

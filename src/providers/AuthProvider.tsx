@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {ApiAuth} from '../../Api';
+import {Api, ApiAuth} from '../../Api';
 import {ApiU} from '../../Api';
 
 type Props = {
@@ -15,6 +15,12 @@ export const AuthContext = createContext({
     password: string,
     name: string,
     lastName: string,
+    location: string,
+  ) => {},
+  PostAd: (
+    title: string,
+    description: string,
+    price: number,
     location: string,
   ) => {},
   loggedIn: false,
@@ -58,6 +64,7 @@ const AuthProvider = (props: Props) => {
         setLoggedIn(true);
         const data = await response.json();
         console.log(data.msg);
+        console.log(data);
       } else {
         // El inicio de sesión falló
         const data = await response.json();
@@ -94,9 +101,29 @@ const AuthProvider = (props: Props) => {
       console.error('Error hacer registro:', error);
     }
   };
+
+  const PostAd = async (
+    title: string,
+    description: string,
+    price: number,
+    location: string,
+  ) => {
+    try {
+      const response = await fetch(Api + '/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({title, description, price, location}),
+      });
+    } catch (error) {
+      console.error('Error hacer registro:', error);
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
+        PostAd,
         name,
         email,
         LoginWithEmailAndPassword,

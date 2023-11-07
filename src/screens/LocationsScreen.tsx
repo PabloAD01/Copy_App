@@ -13,10 +13,10 @@ import {GlobalContext} from '../providers/GlobalProvider';
 
 type Props = {};
 
-const Locations = ({navigation}: {navigation: any}) => {
+const Locations = ({navigation, route}: {navigation: any; route: any}) => {
   const [expandedRegions, setExpandedRegions] = useState<string[]>([]);
 
-  const {setRegion, region} = useContext(GlobalContext);
+  const {setLocation} = route.params;
 
   const toggleRegion = (region: string) => {
     if (expandedRegions.includes(region)) {
@@ -27,8 +27,7 @@ const Locations = ({navigation}: {navigation: any}) => {
   };
 
   const handleRegion = (comuna: string, region: string) => {
-    setRegion(comuna);
-    console.log(comuna);
+    setLocation(comuna);
     toggleRegion(region);
     navigation.navigate('PostAd');
   };

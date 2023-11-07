@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,9 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {HomeScreenNavigationProp} from '../../App';
 import {GlobalContext} from '../providers/GlobalProvider';
-import {Formik} from 'formik';
+import {Formik, FormikProps, FormikValues} from 'formik';
 import * as Yup from 'yup';
+import {AuthContext} from '../providers/AuthProvider';
 
 type Props = {};
 
@@ -36,27 +37,46 @@ const validationSchema = Yup.object().shape({
 });
 
 const PostAdScreen = (props: Props) => {
-  const [titlePosition, setTitlePosition] = useState(26);
-  const [textInputValue, setTextInputValue] = useState('');
-
-  const {region} = useContext(GlobalContext);
-  console.log('region', region);
-
+  const {PostAd} = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const formikRef = useRef<
+    FormikProps<{
+      title: string;
+      price: number;
+      description: string;
+      location: string;
+    }>
+  >(null);
 
-  const handleLocations = () => {
-    navigation.navigate('Locations');
-  };
-
-  const handleTextInputChange = (text: string) => {
-    setTextInputValue(text);
-  };
-
-  const handleTextInputFocus = () => {
-    if (textInputValue === '') {
-      setTitlePosition(10);
+  const setLocation = (location: string) => {
+    if (formikRef.current) {
+      formikRef.current.setFieldValue('location', location);
     }
   };
+
+  const handleLocations = () => {
+    navigation.navigate('Locations', {setLocation});
+  };
+
+  const handlePostAd = async (values: {
+    title: string;
+    price: number;
+    description: string;
+    location: string;
+  }) => {
+    try {
+      const response = await PostAd(
+        values.title,
+        values.description,
+        values.price,
+        values.location,
+      );
+
+      console.log(values);
+    } catch (error) {}
+  };
+
+  useEffect(() => {});
 
   return (
     <KeyboardAvoidingView
@@ -64,14 +84,13 @@ const PostAdScreen = (props: Props) => {
       <Formik
         initialValues={{
           title: '',
-          price: '',
+          price: 0,
           description: '',
+          location: '',
         }}
+        innerRef={formikRef}
         validationSchema={validationSchema}
-        onSubmit={values => {
-          // Lógica para manejar la subida del formulario
-          console.log(values);
-        }}>
+        onSubmit={handlePostAd}>
         {({handleChange, handleSubmit, values, errors, touched}) => (
           <ScrollView style={{height: '100%'}}>
             <View
@@ -202,13 +221,13 @@ const PostAdScreen = (props: Props) => {
                   <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
                     Ubicación
                   </Text>
-                  {region === '' ? (
+                  {values.location === '' ? (
                     <Text style={{color: 'black', fontWeight: 'bold'}}>
                       Seleccione una ubicación
                     </Text>
                   ) : (
                     <Text style={{color: 'black', fontWeight: 'bold'}}>
-                      {region}
+                      {values.location}
                     </Text>
                   )}
                 </View>
@@ -232,7 +251,7 @@ const PostAdScreen = (props: Props) => {
                   }}
                   placeholder="Precio ($)"
                   onChangeText={handleChange('price')}
-                  value={values.price}
+                  value={values.price.toString()}
                 />
                 {touched.price && errors.price && (
                   <Text style={{color: 'red'}}>{errors.price}</Text>
@@ -264,6 +283,21 @@ const PostAdScreen = (props: Props) => {
                 )}
               </View>
             </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#FF842C',
+                paddingVertical: 16,
+                paddingHorizontal: 32,
+                borderRadius: 8,
+                alignItems: 'center',
+                marginVertical: 20,
+              }}
+              onPress={() => handleSubmit()} // handleSubmit de Formik se encargará de manejar el envío del formulario
+            >
+              <Text style={{color: 'white', fontWeight: 'bold', fontSize: 16}}>
+                Publicar Anuncio
+              </Text>
+            </TouchableOpacity>
           </ScrollView>
         )}
       </Formik>
