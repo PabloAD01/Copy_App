@@ -13,6 +13,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -30,6 +31,7 @@ import ProductScreen from './src/screens/ProductScreen';
 import MapScreen from './src/screens/MapScreen';
 import PostAd from './src/screens/PostAdScreen';
 import Locations from './src/screens/LocationsScreen';
+import MyAccountScreen from './src/screens/MyAccountScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
@@ -55,6 +57,7 @@ type RootStackParamList = {
   Map: {product: IProduct};
   PostAd: undefined;
   Locations: {setLocation: (region: string) => void};
+  MyAccount: undefined;
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -141,6 +144,24 @@ function App(): JSX.Element {
                   ),
                 })}
                 component={Locations}
+              />
+              <Drawer.Screen
+                name="MyAccount"
+                options={{
+                  headerRight: () => (
+                    <TouchableOpacity style={{padding: 8}}>
+                      <Text style={{color: '#fff', fontWeight: 'bold'}}>
+                        EDITAR
+                      </Text>
+                    </TouchableOpacity>
+                  ),
+                  title: 'Mi cuenta',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                }}
+                component={MyAccountScreen}
               />
             </Drawer.Navigator>
           </SafeAreaView>

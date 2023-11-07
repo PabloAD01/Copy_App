@@ -9,6 +9,7 @@ type Props = {
 export const AuthContext = createContext({
   name: '',
   email: '',
+  location: '',
   LoginWithEmailAndPassword: (email: string, password: string) => {},
   Register: (
     email: string,
@@ -32,23 +33,9 @@ export const AuthContext = createContext({
 const AuthProvider = (props: Props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [location, setLocation] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginHeight, setLoginHeight] = useState(500);
-
-  useEffect(() => {
-    const getProfile = async () => {
-      try {
-        const response = await fetch(ApiU + '/current-user');
-        const data = await response.json();
-        setName(data.user.name);
-        setEmail(data.user.email);
-        console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getProfile();
-  }, []);
 
   const LoginWithEmailAndPassword = async (email: string, password: string) => {
     try {
@@ -64,7 +51,16 @@ const AuthProvider = (props: Props) => {
         setLoggedIn(true);
         const data = await response.json();
         console.log(data.msg);
-        console.log(data);
+        try {
+          const response = await fetch(ApiU + '/current-user');
+          const data = await response.json();
+          setName(data.user.name);
+          setEmail(data.user.email);
+          setLocation(data.user.location);
+          console.log(data);
+        } catch (error) {
+          console.error(error);
+        }
       } else {
         // El inicio de sesión falló
         const data = await response.json();
@@ -92,10 +88,19 @@ const AuthProvider = (props: Props) => {
       });
 
       if (response.ok) {
-        setEmail(email);
         setLoggedIn(true);
         const data = await response.json();
         console.log(data.msg);
+        try {
+          const response = await fetch(ApiU + '/current-user');
+          const data = await response.json();
+          setName(data.user.name);
+          setEmail(data.user.email);
+          setLocation(data.user.location);
+          console.log(data);
+        } catch (error) {
+          console.error(error);
+        }
       }
     } catch (error) {
       console.error('Error hacer registro:', error);
@@ -126,6 +131,7 @@ const AuthProvider = (props: Props) => {
         PostAd,
         name,
         email,
+        location,
         LoginWithEmailAndPassword,
         Register,
         loggedIn,

@@ -71,7 +71,7 @@ const PostAdScreen = (props: Props) => {
         values.price,
         values.location,
       );
-
+      navigation.navigate('Home');
       console.log(values);
     } catch (error) {}
   };

@@ -1,10 +1,29 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {HomeScreenNavigationProp} from '../../../../App';
+import {useNavigation} from '@react-navigation/native';
+import {AuthContext} from '../../../providers/AuthProvider';
 
-type Props = {};
+type Props = {
+  modalVisible: boolean;
+  setModalVisible: (modalVisible: boolean) => void;
+};
 
-const MyAccountButton = (props: Props) => {
+const MyAccountButton = ({modalVisible, setModalVisible}: Props) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const {loggedIn} = useContext(AuthContext);
+
+  const handlePress = () => {
+    if (!loggedIn) {
+      setModalVisible(true);
+      return;
+    }
+
+    navigation.navigate('MyAccount');
+  };
+
   return (
     <TouchableOpacity
       style={{
@@ -13,7 +32,8 @@ const MyAccountButton = (props: Props) => {
         flexDirection: 'row',
         borderRadius: 5,
         padding: 10,
-      }}>
+      }}
+      onPress={handlePress}>
       <FontAwesome
         name="user-circle-o"
         size={20}
