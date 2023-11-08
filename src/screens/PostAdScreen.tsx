@@ -19,6 +19,10 @@ import {GlobalContext} from '../providers/GlobalProvider';
 import {Formik, FormikProps, FormikValues} from 'formik';
 import * as Yup from 'yup';
 import {AuthContext} from '../providers/AuthProvider';
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from 'react-native-image-picker';
 
 type Props = {};
 
@@ -37,6 +41,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const PostAdScreen = (props: Props) => {
+  const [galleryPhoto, setGalleryPhoto] = useState();
   const {PostAd} = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const formikRef = useRef<
@@ -47,6 +52,20 @@ const PostAdScreen = (props: Props) => {
       location: string;
     }>
   >(null);
+
+  let options: ImageLibraryOptions = {
+    mediaType: 'photo',
+    includeBase64: false,
+  };
+
+  const openGallery = async () => {
+    try {
+      const result: any = await launchImageLibrary(options);
+      setGalleryPhoto(result.assets[0].uri);
+    } catch (error) {
+      console.error('Error selecting image from the gallery:', error);
+    }
+  };
 
   const setLocation = (location: string) => {
     if (formikRef.current) {
@@ -75,8 +94,6 @@ const PostAdScreen = (props: Props) => {
       console.log(values);
     } catch (error) {}
   };
-
-  useEffect(() => {});
 
   return (
     <KeyboardAvoidingView
@@ -116,13 +133,21 @@ const PostAdScreen = (props: Props) => {
                     source={{uri: 'https://dummyimage.com/300'}}
                     style={{width: 100, height: 100, borderRadius: 8}}
                   />
-                  <View
-                    style={{
-                      height: 100,
-                      width: 100,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                    }}></View>
+                  <TouchableOpacity onPress={openGallery}>
+                    <Image
+                      style={{
+                        height: 100,
+                        width: 100,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                      }}
+                      source={
+                        galleryPhoto
+                          ? {uri: galleryPhoto}
+                          : {uri: 'https://dummyimage.com/300'}
+                      }
+                    />
+                  </TouchableOpacity>
                   <View
                     style={{
                       height: 100,
