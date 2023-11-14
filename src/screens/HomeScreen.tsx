@@ -13,10 +13,13 @@ type Props = {};
 
 export interface IProduct {
   id: number;
+  title: string;
   description: string;
   price: string;
-  uploaded?: string;
+  updatedAt?: string;
+  createdAt?: string;
   location?: string;
+  images: string[];
   coords?: {
     long: number;
     lat: number;
@@ -38,7 +41,11 @@ const HomeScreen = (props: Props) => {
       try {
         const response = await fetch(Api + '/products');
         const data = await response.json();
-        setProducts(data.products);
+        const products = data.products.map((product: {[key: string]: any}) => ({
+          ...product,
+          images: product.imageUrls,
+        }));
+        setProducts(products);
       } catch (error: any) {
         console.error('Error fetching products:', error.message);
       }

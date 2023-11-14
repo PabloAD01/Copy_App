@@ -23,6 +23,7 @@ export const AuthContext = createContext({
     description: string,
     price: number,
     location: string,
+    images: string[],
   ) => {},
   loggedIn: false,
   setLoggedIn: (loggedIn: boolean) => {},
@@ -112,6 +113,7 @@ const AuthProvider = (props: Props) => {
     description: string,
     price: number,
     location: string,
+    images: string[],
   ) => {
     try {
       const response = await fetch(Api + '/products', {
@@ -119,7 +121,13 @@ const AuthProvider = (props: Props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({title, description, price, location}),
+        body: JSON.stringify({
+          title,
+          description,
+          price,
+          location,
+          images,
+        }),
       });
     } catch (error) {
       console.error('Error hacer registro:', error);

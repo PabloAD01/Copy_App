@@ -100,7 +100,12 @@ const LoginModal = ({route, navigation}: LoginScreenNavigationProp) => {
           <View style={{width: '100%', gap: 10}}>
             <TextInput
               placeholder="Email"
-              style={{height: 40, width: '100%', borderBottomWidth: 1}}
+              style={{
+                height: 40,
+                width: '100%',
+                borderBottomWidth: 1,
+                color: 'black',
+              }}
               onChangeText={text => {
                 handleChange('email')(text);
                 setError(null);
@@ -114,7 +119,12 @@ const LoginModal = ({route, navigation}: LoginScreenNavigationProp) => {
 
             <TextInput
               placeholder="Password"
-              style={{height: 40, width: '100%', borderBottomWidth: 1}}
+              style={{
+                height: 40,
+                width: '100%',
+                borderBottomWidth: 1,
+                color: 'black',
+              }}
               onChangeText={text => {
                 handleChange('password')(text);
                 setError(null);

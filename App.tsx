@@ -118,6 +118,13 @@ function App(): JSX.Element {
               <Drawer.Screen
                 name="PostAd"
                 options={{
+                  headerRight: () => (
+                    <TouchableOpacity style={{padding: 8}}>
+                      <Text style={{color: '#fff', fontWeight: 'bold'}}>
+                        LIMPIAR
+                      </Text>
+                    </TouchableOpacity>
+                  ),
                   title: 'Publicar aviso',
                   headerStyle: {
                     backgroundColor: '#FF842C',

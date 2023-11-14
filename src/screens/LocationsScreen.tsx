@@ -44,7 +44,7 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Text style={{fontWeight: '600'}}>Todo Chile</Text>
+        <Text style={{fontWeight: '600', color: 'black'}}>Todo Chile</Text>
         <AntDesign name="right" size={14} color="black" />
       </TouchableOpacity>
       {regionesDeChile.map((item, index) => (
@@ -60,7 +60,9 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontWeight: '600'}}>{item.region}</Text>
+            <Text style={{fontWeight: '600', color: 'black'}}>
+              {item.region}
+            </Text>
             <AntDesign
               name={expandedRegions.includes(item.region) ? 'up' : 'right'}
               size={14}
@@ -81,7 +83,16 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
                   justifyContent: 'space-between',
                 }}
                 onPress={() => handleRegion(comuna, item.region)}>
-                <Text style={{fontWeight: '600'}}>{comuna}</Text>
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    color: '#6A6A6A',
+                    borderBottomWidth: 1,
+                    width: '100%',
+                    borderColor: '#e5e3e3',
+                  }}>
+                  {comuna}
+                </Text>
               </TouchableOpacity>
             ))}
         </React.Fragment>

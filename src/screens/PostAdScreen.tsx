@@ -20,6 +20,7 @@ import {Formik, FormikProps, FormikValues} from 'formik';
 import * as Yup from 'yup';
 import {AuthContext} from '../providers/AuthProvider';
 import {
+  launchCamera,
   launchImageLibrary,
   ImageLibraryOptions,
 } from 'react-native-image-picker';
@@ -40,8 +41,12 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
+const imagesArray = [0, 1, 2, 3, 4, 5];
+const dummyImage =
+  'https://dummyimage.com/300x300/dfdfe3&text=Inserte+una+imagen';
+
 const PostAdScreen = (props: Props) => {
-  const [galleryPhoto, setGalleryPhoto] = useState();
+  const [galleryPhoto, setGalleryPhoto] = useState<string[]>([]);
   const {PostAd} = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const formikRef = useRef<
@@ -50,18 +55,35 @@ const PostAdScreen = (props: Props) => {
       price: number;
       description: string;
       location: string;
+      images: string[];
     }>
   >(null);
 
   let options: ImageLibraryOptions = {
     mediaType: 'photo',
-    includeBase64: false,
+    includeBase64: true,
   };
 
-  const openGallery = async () => {
+  const updateImage = (id: number, base64: string) => {
+    const newArray = [...galleryPhoto];
+    newArray[id] = base64;
+    setGalleryPhoto(newArray);
+  };
+
+  const openGallery = async (id: number) => {
     try {
-      const result: any = await launchImageLibrary(options);
-      setGalleryPhoto(result.assets[0].uri);
+      const result: any = await launchImageLibrary(options, response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+          return;
+        }
+      });
+      const imageB64 = `data:${result.assets[0].type};base64,${result.assets[0].base64}`;
+      if (galleryPhoto[id] === undefined) {
+        setGalleryPhoto(prevState => [...prevState, imageB64]);
+      } else {
+        updateImage(id, imageB64);
+      }
     } catch (error) {
       console.error('Error selecting image from the gallery:', error);
     }
@@ -82,6 +104,7 @@ const PostAdScreen = (props: Props) => {
     price: number;
     description: string;
     location: string;
+    images: string[];
   }) => {
     try {
       const response = await PostAd(
@@ -89,11 +112,27 @@ const PostAdScreen = (props: Props) => {
         values.description,
         values.price,
         values.location,
+        values.images,
       );
+      if (formikRef.current) {
+        formikRef.current.resetForm(); // Esta función de Formik restablecerá los valores del formulario a su estado inicial
+        setGalleryPhoto([]); // También resetea la imagen de la galería
+      }
       navigation.navigate('Home');
       console.log(values);
     } catch (error) {}
   };
+
+  const handleResetFields = () => {
+    if (formikRef.current) {
+      formikRef.current.resetForm(); // Esta función de Formik restablecerá los valores del formulario a su estado inicial
+      setGalleryPhoto([]); // También resetea la imagen de la galería
+    }
+  };
+
+  useEffect(() => {
+    formikRef.current?.setFieldValue('images', galleryPhoto);
+  }, [galleryPhoto]);
 
   return (
     <KeyboardAvoidingView
@@ -104,6 +143,7 @@ const PostAdScreen = (props: Props) => {
           price: 0,
           description: '',
           location: '',
+          images: [''],
         }}
         innerRef={formikRef}
         validationSchema={validationSchema}
@@ -129,53 +169,25 @@ const PostAdScreen = (props: Props) => {
                     flexDirection: 'row',
                     gap: 32,
                   }}>
-                  <Image
-                    source={{uri: 'https://dummyimage.com/300'}}
-                    style={{width: 100, height: 100, borderRadius: 8}}
-                  />
-                  <TouchableOpacity onPress={openGallery}>
-                    <Image
-                      style={{
-                        height: 100,
-                        width: 100,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                      }}
-                      source={
-                        galleryPhoto
-                          ? {uri: galleryPhoto}
-                          : {uri: 'https://dummyimage.com/300'}
-                      }
-                    />
-                  </TouchableOpacity>
-                  <View
-                    style={{
-                      height: 100,
-                      width: 100,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                    }}></View>
-                  <View
-                    style={{
-                      height: 100,
-                      width: 100,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                    }}></View>
-                  <View
-                    style={{
-                      height: 100,
-                      width: 100,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                    }}></View>
-                  <View
-                    style={{
-                      height: 100,
-                      width: 100,
-                      borderWidth: 1,
-                      borderRadius: 8,
-                    }}></View>
+                  {imagesArray.map((id, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => openGallery(id)}
+                        key={id}>
+                        <Image
+                          style={{
+                            height: 100,
+                            width: 100,
+                            borderWidth: 1,
+                            borderRadius: 8,
+                          }}
+                          source={{
+                            uri: values.images[id] || dummyImage,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
               </ScrollView>
               <Text style={{textAlign: 'center', color: 'black'}}>
@@ -202,8 +214,10 @@ const PostAdScreen = (props: Props) => {
                     backgroundColor: 'white',
                     borderBottomWidth: 1,
                     borderRadius: 8,
+                    color: 'black',
                   }}
                   placeholder="Titulo"
+                  placeholderTextColor={'gray'}
                   onChangeText={handleChange('title')}
                   value={values.title}
                 />
@@ -265,6 +279,7 @@ const PostAdScreen = (props: Props) => {
                   position: 'relative',
                   padding: 16,
                 }}>
+                <Text style={{color: 'gray'}}>Precio ($)</Text>
                 <TextInput
                   style={{
                     height: 40,
@@ -273,6 +288,7 @@ const PostAdScreen = (props: Props) => {
                     backgroundColor: 'white',
                     borderBottomWidth: 1,
                     borderRadius: 8,
+                    color: 'black',
                   }}
                   placeholder="Precio ($)"
                   onChangeText={handleChange('price')}
@@ -298,8 +314,10 @@ const PostAdScreen = (props: Props) => {
                     backgroundColor: 'white',
                     borderBottomWidth: 1,
                     borderRadius: 8,
+                    color: 'black',
                   }}
                   placeholder="Descripción"
+                  placeholderTextColor={'gray'}
                   onChangeText={handleChange('description')}
                   value={values.description}
                 />
@@ -321,6 +339,20 @@ const PostAdScreen = (props: Props) => {
             >
               <Text style={{color: 'white', fontWeight: 'bold', fontSize: 16}}>
                 Publicar Anuncio
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#FF0000',
+                paddingVertical: 16,
+                paddingHorizontal: 32,
+                borderRadius: 8,
+                alignItems: 'center',
+              }}
+              onPress={handleResetFields} // Llama a la función para limpiar los campos
+            >
+              <Text style={{color: 'white', fontWeight: 'bold', fontSize: 16}}>
+                Limpiar Campos
               </Text>
             </TouchableOpacity>
           </ScrollView>

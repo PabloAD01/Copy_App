@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   Linking,
+  Dimensions,
 } from 'react-native';
 import {ProductScreenNavigationProp, ProductScreenRouteProp} from '../../App';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -17,12 +18,16 @@ import Icon4 from 'react-native-vector-icons/Entypo';
 import LikeButton from '../components/LikeButton';
 import {ProductInfoDictionary} from '../dictionaries/ProductInfoDictionary';
 import MapView from 'react-native-maps';
+import Carousel from 'react-native-reanimated-carousel';
 
 type Props = {};
+
+const {width} = Dimensions.get('window');
 
 const ProductScreen = () => {
   const route = useRoute<ProductScreenRouteProp>();
   const {product} = route.params;
+  console.log(product.description);
 
   const navigation = useNavigation<ProductScreenNavigationProp>();
   const handlePress = () => {
@@ -33,7 +38,10 @@ const ProductScreen = () => {
     navigation.goBack();
   };
 
-  console.log(product);
+  const formatPrice = (price: string) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
@@ -53,14 +61,22 @@ const ProductScreen = () => {
         </View>
       </View>
       <ScrollView style={styles.contentContainer}>
-        <Image
-          source={{
-            uri: 'https://dummyimage.com/300',
-          }}
-          style={{
-            height: 300,
-            width: '100%',
-          }}
+        <Carousel
+          width={width}
+          height={300}
+          autoPlay={false}
+          data={product.images}
+          scrollAnimationDuration={1000}
+          renderItem={({index}) => (
+            <Image
+              style={{
+                flex: 1,
+                borderWidth: 1,
+                justifyContent: 'center',
+              }}
+              source={{uri: product.images[index]}}
+            />
+          )}
         />
         <View
           style={{
@@ -72,13 +88,13 @@ const ProductScreen = () => {
             paddingVertical: 10,
           }}>
           <Text style={{color: '#838383', fontSize: 15, fontWeight: '400'}}>
-            {product.uploaded}
+            {product.createdAt}
           </Text>
           <Text style={{color: '#555555', fontSize: 20, fontWeight: '300'}}>
-            {product.description}
+            {product.title}
           </Text>
           <Text style={{color: '#F48631', fontSize: 20, fontWeight: '600'}}>
-            {product.price}
+            ${formatPrice(product.price)}
           </Text>
         </View>
         {product?.info && (
@@ -181,7 +197,7 @@ const ProductScreen = () => {
                 {`User name`}
               </Text>
               <Text style={{color: '#555555', fontSize: 15, fontWeight: '300'}}>
-                {`User since ${product.uploaded}`}
+                {`Usuario desde ${product.createdAt}`}
               </Text>
             </View>
           </View>

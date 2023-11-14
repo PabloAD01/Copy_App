@@ -23,7 +23,7 @@ const ProductsCard = ({data, onPress}: Props) => {
     <TouchableOpacity style={styles.cardContainer} onPress={handleOnPress}>
       <Image
         source={{
-          uri: 'https://dummyimage.com/300',
+          uri: data.images[0] || 'https://dummyimage.com/300',
         }}
         style={{
           height: 130,
@@ -33,10 +33,9 @@ const ProductsCard = ({data, onPress}: Props) => {
       <View style={styles.cardContent}>
         <View>
           <View style={{flexDirection: 'row', gap: 10}}>
-            <Text style={{color: '#757575'}}>{data.uploaded}</Text>
             <Text style={{color: '#757575'}}>{data.location}</Text>
           </View>
-          <Text style={{color: '#333333'}}>{data.description}</Text>
+          <Text style={{color: '#333333'}}>{data.title}</Text>
         </View>
         <View
           style={{

@@ -22,7 +22,9 @@ const MyAccountScreen = (props: Props) => {
             gap: 10,
           }}>
           <FontAwesome name="user-circle-o" size={100} color="gray" />
-          <Text style={{fontWeight: 'bold', fontSize: 20}}>Pablo</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 20, color: 'gray'}}>
+            Pablo
+          </Text>
           <Text style={{fontSize: 12, color: 'gray'}}>
             Región de Magallanes y Antártica Chilena
           </Text>
@@ -43,8 +45,10 @@ const MyAccountScreen = (props: Props) => {
               borderRightWidth: 2,
               borderColor: '#ECECEC',
             }}>
-            <Text style={{fontWeight: 'bold', fontSize: 20}}>0</Text>
-            <Text>Visitas Totales</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 20, color: 'gray'}}>
+              0
+            </Text>
+            <Text style={{color: 'gray'}}>Visitas Totales</Text>
           </View>
           <View
             style={{
@@ -52,8 +56,10 @@ const MyAccountScreen = (props: Props) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{fontWeight: 'bold', fontSize: 20}}>0</Text>
-            <Text>Contactos Totales</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 20, color: 'gray'}}>
+              0
+            </Text>
+            <Text style={{color: 'gray'}}>Contactos Totales</Text>
           </View>
         </View>
       </View>
@@ -68,7 +74,7 @@ const MyAccountScreen = (props: Props) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{fontWeight: 'bold'}}>Mis avisos</Text>
+          <Text style={{fontWeight: 'bold', color: 'gray'}}>Mis avisos</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -99,7 +105,7 @@ const MyAccountScreen = (props: Props) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{fontWeight: 'bold'}}>Mis favoritos</Text>
+          <Text style={{fontWeight: 'bold', color: 'gray'}}>Mis favoritos</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -130,7 +136,7 @@ const MyAccountScreen = (props: Props) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{fontWeight: 'bold'}}>Mis búsquedas</Text>
+          <Text style={{fontWeight: 'bold', color: 'gray'}}>Mis búsquedas</Text>
           <View
             style={{
               flexDirection: 'row',
