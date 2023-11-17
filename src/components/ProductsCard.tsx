@@ -44,7 +44,7 @@ const ProductsCard = ({data, onPress}: Props) => {
             alignItems: 'center',
           }}>
           <Text style={{color: '#F08648', fontWeight: '600', fontSize: 20}}>
-            {data.price}
+            ${data.price}
           </Text>
           <LikeButton like={playing} onPress={handlePress} />
         </View>

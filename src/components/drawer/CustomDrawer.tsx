@@ -25,6 +25,7 @@ import GeneralInfoButton from '../buttons/options/GeneralInfoButton';
 import AuthModal from '../modals/AuthModal';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from '../../providers/AuthProvider';
+import LogoutButton from '../buttons/options/LogoutButton';
 
 type Props = {};
 
@@ -113,6 +114,19 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
         <LinkedinButton />
         <GooglePlayButton />
       </View>
+      {loggedIn ? (
+        <View
+          style={{
+            paddingHorizontal: 10,
+            flex: 1,
+            justifyContent: 'center',
+          }}>
+          <LogoutButton />
+        </View>
+      ) : (
+        ''
+      )}
+
       <NavigationContainer independent>
         <AuthModal
           modalVisible={modalVisible}

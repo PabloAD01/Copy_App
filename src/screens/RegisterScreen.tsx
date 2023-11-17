@@ -79,28 +79,6 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
     }
   };
 
-  /*
-
-  cambiar contenido del fetch para el registro
-  cambiar las API en una sola API general y solo cambiar la ultima ruta
-
-  Añadir los elementos faltantes para el registro
-  name: String,
-  lastName: {
-    type: String,
-    default: "lastName",
-  },
-  location: {
-    type: String,
-    default: "Somewhere",
-  },
-
-  Agregar la vista de creacion de articulos o productos 
-  se tiene que poder subir imagenes para el articulo
-  
-
-  */
-
   return (
     <View onLayout={onLayout} style={{backgroundColor: 'white', padding: 20}}>
       <Text style={styles.modalText}>REGISTER</Text>

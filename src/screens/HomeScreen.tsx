@@ -44,6 +44,7 @@ const HomeScreen = (props: Props) => {
         const products = data.products.map((product: {[key: string]: any}) => ({
           ...product,
           images: product.imageUrls,
+          price: product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
         }));
         setProducts(products);
       } catch (error: any) {

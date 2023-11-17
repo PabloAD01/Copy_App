@@ -44,6 +44,7 @@ import CustomDrawer from './src/components/drawer/CustomDrawer';
 import AuthProvider from './src/providers/AuthProvider';
 import GlobalProvider from './src/providers/GlobalProvider';
 import {HeaderBackButton} from '@react-navigation/elements';
+import EditProfile from './src/screens/EditProfile';
 
 enableLatestRenderer();
 
@@ -154,9 +155,11 @@ function App(): JSX.Element {
               />
               <Drawer.Screen
                 name="MyAccount"
-                options={{
+                options={({navigation}) => ({
                   headerRight: () => (
-                    <TouchableOpacity style={{padding: 8}}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('EditProfile')}
+                      style={{padding: 8}}>
                       <Text style={{color: '#fff', fontWeight: 'bold'}}>
                         EDITAR
                       </Text>
@@ -167,8 +170,27 @@ function App(): JSX.Element {
                     backgroundColor: '#FF842C',
                   },
                   headerTintColor: '#fff',
-                }}
+                })}
                 component={MyAccountScreen}
+              />
+              <Drawer.Screen
+                name="EditProfile"
+                options={({navigation}) => ({
+                  title: 'Editar perfil',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                  headerLeft: () => (
+                    <HeaderBackButton
+                      onPress={() => {
+                        navigation.navigate('MyAccount');
+                      }}
+                      tintColor="#fff"
+                    />
+                  ),
+                })}
+                component={EditProfile}
               />
             </Drawer.Navigator>
           </SafeAreaView>

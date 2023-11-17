@@ -29,6 +29,7 @@ export const AuthContext = createContext({
   setLoggedIn: (loggedIn: boolean) => {},
   setLoginHeight: (loginHeight: number) => {},
   loginHeight: 500,
+  logoutUser: () => {},
 });
 
 const AuthProvider = (props: Props) => {
@@ -133,6 +134,23 @@ const AuthProvider = (props: Props) => {
       console.error('Error hacer registro:', error);
     }
   };
+
+  const logoutUser = async () => {
+    setLoggedIn(false);
+    setName('');
+    setEmail('');
+    setLocation('');
+    try {
+      const response = await fetch(ApiAuth + '/logout', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error('Error hacer registro:', error);
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -142,6 +160,7 @@ const AuthProvider = (props: Props) => {
         location,
         LoginWithEmailAndPassword,
         Register,
+        logoutUser,
         loggedIn,
         setLoggedIn,
         setLoginHeight,

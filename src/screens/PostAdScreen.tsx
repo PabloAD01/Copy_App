@@ -34,7 +34,8 @@ const validationSchema = Yup.object().shape({
     .max(50, 'El título debe un máximo de 50 caracteres'),
   price: Yup.number()
     .required('El precio es obligatorio')
-    .positive('El precio debe ser un número positivo'),
+    .positive('El precio debe ser un número positivo')
+    .typeError('El precio debe ser un número'),
   description: Yup.string().max(
     2000,
     'La descripción debe tener un tamaño maximo de 2000 caracteres',

@@ -38,10 +38,6 @@ const ProductScreen = () => {
     navigation.goBack();
   };
 
-  const formatPrice = (price: string) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  };
-
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
@@ -94,7 +90,7 @@ const ProductScreen = () => {
             {product.title}
           </Text>
           <Text style={{color: '#F48631', fontSize: 20, fontWeight: '600'}}>
-            ${formatPrice(product.price)}
+            ${product.price}
           </Text>
         </View>
         {product?.info && (
