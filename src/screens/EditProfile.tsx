@@ -1,5 +1,5 @@
 import {Formik} from 'formik';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Yup from 'yup';
 import {AuthContext} from '../providers/AuthProvider';
+import {useNavigation} from '@react-navigation/native';
+import {HomeScreenNavigationProp} from '../../App';
 
 type Props = {};
 
 const schema = Yup.object({
-  email: Yup.string().email().required(),
   name: Yup.string().max(50).required(),
   phone: Yup.number().required(),
   password: Yup.string().min(8).required('Se requiere contraseña'),
@@ -28,17 +29,18 @@ const schema = Yup.object({
 });
 
 const EditProfile = (props: Props) => {
-  const {email, name} = useContext(AuthContext);
+  const {email, name, location} = useContext(AuthContext);
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [accountType, setAccountType] = useState(true);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Formik
         initialValues={{
-          email: email || '',
           name: name || '',
-          phone: 0,
-          location: '',
+          phone: '',
+          location: location || '',
           password: '',
           confirmPassword: '',
         }}
@@ -62,24 +64,66 @@ const EditProfile = (props: Props) => {
               }}>
               <FontAwesome name="user-circle-o" size={100} color="gray" />
               <View
-                style={{flex: 1, gap: 8, flexDirection: 'row', borderWidth: 1}}>
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  gap: 2,
+                }}>
                 <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    borderRightWidth: 1,
-                    paddingHorizontal: 16,
-                    paddingVertical: 8,
-                  }}>
-                  <Text>Persona</Text>
+                  style={
+                    accountType
+                      ? {
+                          paddingVertical: 8,
+                          backgroundColor: '#FF6205',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: 140,
+                        }
+                      : {
+                          paddingVertical: 8,
+                          backgroundColor: '#B6B6B6',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: 140,
+                        }
+                  }
+                  onPress={() => setAccountType(true)}>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color: 'white',
+                      textTransform: 'uppercase',
+                    }}>
+                    Persona
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    borderRightWidth: 1,
-                    paddingHorizontal: 16,
-                    paddingVertical: 8,
-                  }}>
-                  <Text>Profesional</Text>
+                  style={
+                    accountType
+                      ? {
+                          paddingVertical: 8,
+                          backgroundColor: '#B6B6B6',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: 140,
+                        }
+                      : {
+                          paddingVertical: 8,
+                          backgroundColor: '#FF6205',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: 140,
+                        }
+                  }
+                  onPress={() => setAccountType(false)}>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color: 'white',
+                      textTransform: 'uppercase',
+                    }}>
+                    Profesional
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -106,11 +150,9 @@ const EditProfile = (props: Props) => {
                   }}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
-                  value={values.email}
+                  value={email}
+                  editable={false}
                 />
-                {touched.email && errors.email && (
-                  <Text style={{color: 'red'}}>{errors.email}</Text>
-                )}
               </View>
 
               {/* Name field */}
@@ -141,6 +183,35 @@ const EditProfile = (props: Props) => {
                 )}
               </View>
 
+              {!accountType && (
+                <View
+                  style={{
+                    width: '100%',
+                    backgroundColor: 'white',
+                    position: 'relative',
+                    padding: 16,
+                  }}>
+                  <Text style={{color: 'gray'}}>R.U.T.</Text>
+                  <TextInput
+                    style={{
+                      height: 40,
+                      borderColor: 'gray',
+                      paddingHorizontal: 10,
+                      backgroundColor: 'white',
+                      borderBottomWidth: 1,
+                      borderRadius: 8,
+                      color: 'black',
+                    }}
+                    placeholder="Rut"
+                    placeholderTextColor={'gray'}
+                    value={values.phone.toString()}
+                  />
+                  {touched.phone && errors.phone && (
+                    <Text style={{color: 'red'}}>{errors.phone}</Text>
+                  )}
+                </View>
+              )}
+
               {/* Phone field */}
               <View
                 style={{
@@ -160,6 +231,8 @@ const EditProfile = (props: Props) => {
                     borderRadius: 8,
                     color: 'black',
                   }}
+                  placeholder="912345678"
+                  placeholderTextColor={'gray'}
                   onChangeText={handleChange('phone')}
                   onBlur={handleBlur('phone')}
                   value={values.phone.toString()}
