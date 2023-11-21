@@ -19,6 +19,7 @@ export const AuthContext = createContext({
     location: string,
   ) => {},
   PostAd: (
+    owner: string,
     title: string,
     description: string,
     price: number,
@@ -110,6 +111,7 @@ const AuthProvider = (props: Props) => {
   };
 
   const PostAd = async (
+    owner: string,
     title: string,
     description: string,
     price: number,
@@ -123,6 +125,7 @@ const AuthProvider = (props: Props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          owner,
           title,
           description,
           price,

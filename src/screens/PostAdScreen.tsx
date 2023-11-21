@@ -48,10 +48,11 @@ const dummyImage =
 
 const PostAdScreen = (props: Props) => {
   const [galleryPhoto, setGalleryPhoto] = useState<string[]>([]);
-  const {PostAd} = useContext(AuthContext);
+  const {PostAd, name} = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const formikRef = useRef<
     FormikProps<{
+      owner: string;
       title: string;
       price: number;
       description: string;
@@ -101,6 +102,7 @@ const PostAdScreen = (props: Props) => {
   };
 
   const handlePostAd = async (values: {
+    owner: string;
     title: string;
     price: number;
     description: string;
@@ -109,6 +111,7 @@ const PostAdScreen = (props: Props) => {
   }) => {
     try {
       const response = await PostAd(
+        values.owner,
         values.title,
         values.description,
         values.price,
@@ -140,6 +143,7 @@ const PostAdScreen = (props: Props) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Formik
         initialValues={{
+          owner: name,
           title: '',
           price: 0,
           description: '',

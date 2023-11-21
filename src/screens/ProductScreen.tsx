@@ -27,7 +27,6 @@ const {width} = Dimensions.get('window');
 const ProductScreen = () => {
   const route = useRoute<ProductScreenRouteProp>();
   const {product} = route.params;
-  console.log(product.description);
 
   const navigation = useNavigation<ProductScreenNavigationProp>();
   const handlePress = () => {
@@ -190,7 +189,7 @@ const ProductScreen = () => {
             />
             <View>
               <Text style={{color: '#555555', fontSize: 15, fontWeight: '600'}}>
-                {`User name`}
+                {product.owner}
               </Text>
               <Text style={{color: '#555555', fontSize: 15, fontWeight: '300'}}>
                 {`Usuario desde ${product.createdAt}`}

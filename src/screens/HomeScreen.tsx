@@ -12,12 +12,14 @@ import {Api} from '../../Api';
 type Props = {};
 
 export interface IProduct {
+  owner: string;
   id: number;
   title: string;
   description: string;
   price: string;
   updatedAt?: string;
   createdAt?: string;
+  createdBy?: string;
   location?: string;
   images: string[];
   coords?: {
