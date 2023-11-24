@@ -54,7 +54,7 @@ const LoginModal = ({route, navigation}: LoginScreenNavigationProp) => {
       const {email, password} = values;
       const response = await LoginWithEmailAndPassword(email, password);
     } catch (error) {
-      console.log(error);
+      console.log('ERROR LOGIN', error);
     }
   };
 

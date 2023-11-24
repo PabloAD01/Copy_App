@@ -7,6 +7,7 @@ type Props = {
 };
 
 export const AuthContext = createContext({
+  id: '',
   name: '',
   email: '',
   location: '',
@@ -34,6 +35,7 @@ export const AuthContext = createContext({
 });
 
 const AuthProvider = (props: Props) => {
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [location, setLocation] = useState('');
@@ -57,17 +59,16 @@ const AuthProvider = (props: Props) => {
         try {
           const response = await fetch(ApiU + '/current-user');
           const data = await response.json();
+          setId(data.user._id);
           setName(data.user.name);
           setEmail(data.user.email);
           setLocation(data.user.location);
           console.log(data);
         } catch (error) {
-          console.error(error);
+          console.error('Error al obtener usuario:', error);
         }
       } else {
-        // El inicio de sesión falló
-        const data = await response.json();
-        console.log(data);
+        console.error('Error al iniciar sesión2:', response);
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
@@ -97,10 +98,11 @@ const AuthProvider = (props: Props) => {
         try {
           const response = await fetch(ApiU + '/current-user');
           const data = await response.json();
+          setId(data.user._id);
           setName(data.user.name);
           setEmail(data.user.email);
           setLocation(data.user.location);
-          console.log(data);
+          console.log('PERSONAL DATA', data);
         } catch (error) {
           console.error(error);
         }
@@ -140,6 +142,7 @@ const AuthProvider = (props: Props) => {
 
   const logoutUser = async () => {
     setLoggedIn(false);
+    setId('');
     setName('');
     setEmail('');
     setLocation('');
@@ -158,6 +161,7 @@ const AuthProvider = (props: Props) => {
     <AuthContext.Provider
       value={{
         PostAd,
+        id,
         name,
         email,
         location,

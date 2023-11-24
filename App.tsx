@@ -45,6 +45,7 @@ import AuthProvider from './src/providers/AuthProvider';
 import GlobalProvider from './src/providers/GlobalProvider';
 import {HeaderBackButton} from '@react-navigation/elements';
 import EditProfile from './src/screens/EditProfile';
+import MyAdsScreen from './src/screens/MyAdsScreen';
 
 enableLatestRenderer();
 
@@ -191,6 +192,25 @@ function App(): JSX.Element {
                   ),
                 })}
                 component={EditProfile}
+              />
+              <Drawer.Screen
+                name="MyAds"
+                options={({navigation}) => ({
+                  title: 'Mis avisos',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                  headerLeft: () => (
+                    <HeaderBackButton
+                      onPress={() => {
+                        navigation.navigate('MyAccount');
+                      }}
+                      tintColor="#fff"
+                    />
+                  ),
+                })}
+                component={MyAdsScreen}
               />
             </Drawer.Navigator>
           </SafeAreaView>
