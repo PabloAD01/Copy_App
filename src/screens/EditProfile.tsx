@@ -1,5 +1,5 @@
-import {Formik} from 'formik';
-import React, {useContext, useState} from 'react';
+import {Formik, FormikProps} from 'formik';
+import React, {useContext, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ type Props = {};
 
 const schema = Yup.object({
   name: Yup.string().max(50).required(),
-  phone: Yup.number().required(),
+  phone: Yup.number(),
   password: Yup.string().min(8).required('Se requiere contraseña'),
   confirmPassword: Yup.string()
     .required()
@@ -28,10 +28,40 @@ const schema = Yup.object({
   location: Yup.string().required('Location is required'),
 });
 
-const EditProfile = (props: Props) => {
-  const {email, name, location} = useContext(AuthContext);
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+const EditProfile = ({navigation}: {navigation: any}) => {
+  const {email, name, location, updateUser} = useContext(AuthContext);
   const [accountType, setAccountType] = useState(true);
+  const formikRef = useRef<
+    FormikProps<{
+      name: string;
+      phone: number;
+      location: string;
+      password: string;
+      confirmPassword: string;
+    }>
+  >(null);
+
+  const handleSubmit = async (values: {
+    name: string;
+    phone: number;
+    location: string;
+    password: string;
+  }) => {
+    try {
+      const response = await updateUser(
+        values.name,
+        values.phone,
+        values.location,
+        values.password,
+      );
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
+      navigation.navigate('Home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -39,13 +69,14 @@ const EditProfile = (props: Props) => {
       <Formik
         initialValues={{
           name: name || '',
-          phone: '',
+          phone: 0,
           location: location || '',
           password: '',
           confirmPassword: '',
         }}
+        innerRef={formikRef}
         validationSchema={schema}
-        onSubmit={values => console.log('submit', values)}>
+        onSubmit={handleSubmit}>
         {({
           handleChange,
           handleBlur,
@@ -237,6 +268,7 @@ const EditProfile = (props: Props) => {
                   onBlur={handleBlur('phone')}
                   value={values.phone.toString()}
                   keyboardType="numeric"
+                  maxLength={9}
                 />
                 {touched.phone && errors.phone && (
                   <Text style={{color: 'red'}}>{errors.phone}</Text>
@@ -282,7 +314,6 @@ const EditProfile = (props: Props) => {
                 }}>
                 <Text style={{color: 'gray'}}>Contraseña</Text>
                 <TextInput
-                  multiline
                   style={{
                     height: 40,
                     borderColor: 'gray',
@@ -295,7 +326,7 @@ const EditProfile = (props: Props) => {
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
-                  secureTextEntry
+                  secureTextEntry={true}
                 />
                 {touched.password && errors.password && (
                   <Text style={{color: 'red'}}>{errors.password}</Text>
@@ -312,7 +343,6 @@ const EditProfile = (props: Props) => {
                 }}>
                 <Text style={{color: 'gray'}}>Confirmar contraseña</Text>
                 <TextInput
-                  multiline
                   style={{
                     height: 40,
                     borderColor: 'gray',
@@ -325,7 +355,7 @@ const EditProfile = (props: Props) => {
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
                   value={values.confirmPassword}
-                  secureTextEntry
+                  secureTextEntry={true}
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
                   <Text style={{color: 'red'}}>{errors.confirmPassword}</Text>

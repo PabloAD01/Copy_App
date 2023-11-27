@@ -19,6 +19,12 @@ export const AuthContext = createContext({
     lastName: string,
     location: string,
   ) => {},
+  updateUser: (
+    name: string,
+    phone: number,
+    location: string,
+    password: string,
+  ) => {},
   PostAd: (
     owner: string,
     title: string,
@@ -112,6 +118,28 @@ const AuthProvider = (props: Props) => {
     }
   };
 
+  const updateUser = async (
+    name: string,
+    phone: number,
+    location: string,
+    password: string,
+  ) => {
+    try {
+      const response = await fetch(ApiU + '/update-user', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          location,
+          password,
+        }),
+      });
+    } catch (error) {}
+  };
+
   const PostAd = async (
     owner: string,
     title: string,
@@ -160,14 +188,15 @@ const AuthProvider = (props: Props) => {
   return (
     <AuthContext.Provider
       value={{
-        PostAd,
         id,
         name,
         email,
         location,
         LoginWithEmailAndPassword,
         Register,
+        updateUser,
         logoutUser,
+        PostAd,
         loggedIn,
         setLoggedIn,
         setLoginHeight,

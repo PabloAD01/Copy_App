@@ -7,29 +7,40 @@ import ProductsCard2 from '../components/ProductsCard2';
 import {IProduct} from './HomeScreen';
 import {useNavigation} from '@react-navigation/native';
 import {ProductScreenNavigationProp} from '../../App';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type Props = {};
 
 const MyAds = ({route}: {route: any}) => {
   const {product} = route.params;
   const navigation = useNavigation<ProductScreenNavigationProp>();
-  console.log('MyAds', product);
 
-  const handlePress = () => {
+  const handlePress = (product: IProduct) => {
     navigation.navigate('Product', {product: product});
   };
 
   return (
     <View style={styles.mainContainer}>
-      <ScrollView style={styles.contentContainer} removeClippedSubviews={true}>
-        {product.map((item: any, index: number) => {
-          return (
-            <View key={item['_id']} style={{marginBottom: 10}}>
-              <ProductsCard data={item} onPress={handlePress} />
-            </View>
-          );
-        })}
-      </ScrollView>
+      {product.length === 0 ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>No tienes anuncios</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('PostAd')}>
+            <Text>Publicar aviso</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <ScrollView
+          style={styles.contentContainer}
+          removeClippedSubviews={true}>
+          {product.map((item: any, index: number) => {
+            return (
+              <View key={item['_id']} style={{marginBottom: 10}}>
+                <ProductsCard data={item} onPress={handlePress} />
+              </View>
+            );
+          })}
+        </ScrollView>
+      )}
     </View>
   );
 };

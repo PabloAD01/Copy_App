@@ -33,7 +33,7 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
     };
 
     getProducts();
-  }, []);
+  }, [id]);
   const handlePress = () => {
     navigation.navigate('MyAds', {product: addProducts});
   };
