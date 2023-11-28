@@ -9,10 +9,9 @@ type Props = {
 };
 
 const ProductsCard = ({data, onPress}: Props) => {
-  const [playing, setPlaying] = useState(data?.like || false);
-
+  const [playing, setPlaying] = useState<boolean | null>(null);
   const handlePress = () => {
-    setPlaying(!playing);
+    setPlaying(prevPlaying => (prevPlaying === null ? true : !prevPlaying));
   };
 
   const handleOnPress = () => {

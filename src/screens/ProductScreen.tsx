@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect, memo} from 'react';
+import React, {useEffect, memo, useState} from 'react';
 import {
   View,
   Text,
@@ -27,34 +27,13 @@ const {width} = Dimensions.get('window');
 const ProductScreen = () => {
   const route = useRoute<ProductScreenRouteProp>();
   const {product} = route.params;
-
   const navigation = useNavigation<ProductScreenNavigationProp>();
   const handlePress = () => {
     navigation.navigate('Map', {product: product});
   };
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.headerContainer}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
-          <TouchableOpacity onPress={handleBack}>
-            <Icon name="arrowleft" size={20} color={'#fff'} />
-          </TouchableOpacity>
-          <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
-            Avisos
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 24}}>
-          <LikeButton like={false} onPress={function (): void {}} />
-          <TouchableOpacity>
-            <Icon2 name="share" size={20} color={'#fff'} />
-          </TouchableOpacity>
-        </View>
-      </View>
       <ScrollView style={styles.contentContainer}>
         <Carousel
           width={width}

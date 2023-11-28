@@ -2,25 +2,26 @@ import React, {useEffect, useRef, useState} from 'react';
 import LottieView from 'lottie-react-native';
 import {TouchableOpacity} from 'react-native';
 type Props = {
-  like:boolean;
+  like: boolean | null;
   onPress: () => void;
 };
 
 const LikeButton = ({like, onPress}: Props) => {
   const animationRef = useRef<LottieView>(null);
-  
 
   useEffect(() => {
-    if (like) {
-      animationRef.current?.play(60, 120);
-    } else {
-      animationRef.current?.play(70,30)
+    if (like !== null) {
+      if (like) {
+        animationRef.current?.play(60, 120);
+      } else {
+        animationRef.current?.play(70, 30);
+      }
     }
   }, [like]);
 
   return (
     <TouchableOpacity
-      style={{ width: 30, height: 30, position: 'relative' }}
+      style={{width: 30, height: 30, position: 'relative'}}
       onPress={onPress}>
       <LottieView
         style={{

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Api} from '../../Api';
@@ -10,6 +10,7 @@ type Props = {};
 const MyAccountScreen = ({navigation}: {navigation: any}) => {
   const {id, location, name} = useContext(AuthContext);
   const [addProducts, setAddProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // Nuevo estado de carga
 
   useEffect(() => {
     const getProducts = async () => {
@@ -27,6 +28,7 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
           }));
 
         setAddProducts(products);
+        setLoading(false); // Después de obtener los datos, establecer loading en falso
       } catch (error: any) {
         console.error('Error fetching products:', error.message);
       }
@@ -96,6 +98,7 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
         </View>
       </View>
       <View style={{flex: 1, gap: 8}}>
+        {}
         <TouchableOpacity
           style={{
             width: '100%',
@@ -106,7 +109,8 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          onPress={handlePress}>
+          onPress={handlePress}
+          disabled={loading}>
           <Text style={{fontWeight: 'bold', color: 'gray'}}>Mis avisos</Text>
           <View
             style={{
@@ -115,19 +119,26 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text
-              style={{
-                backgroundColor: '#BEBEBE',
-                paddingHorizontal: 12,
-                borderRadius: 8,
-                color: 'white',
-                fontWeight: '600',
-              }}>
-              {addProducts.length}
-            </Text>
-            <AntDesign name="right" size={14} color="black" />
+            {loading ? ( // Mostrar el indicador de carga si loading es verdadero
+              <ActivityIndicator size="small" color="#0000ff" />
+            ) : (
+              <>
+                <Text
+                  style={{
+                    backgroundColor: '#BEBEBE',
+                    paddingHorizontal: 12,
+                    borderRadius: 8,
+                    color: 'white',
+                    fontWeight: '600',
+                  }}>
+                  {addProducts.length}
+                </Text>
+                <AntDesign name="right" size={14} color="black" />
+              </>
+            )}
           </View>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             width: '100%',
@@ -154,7 +165,7 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
                 color: 'white',
                 fontWeight: '600',
               }}>
-              989090909
+              0
             </Text>
             <AntDesign name="right" size={14} color="black" />
           </View>
@@ -185,7 +196,7 @@ const MyAccountScreen = ({navigation}: {navigation: any}) => {
                 color: 'white',
                 fontWeight: '600',
               }}>
-              989090909
+              0
             </Text>
             <AntDesign name="right" size={14} color="black" />
           </View>

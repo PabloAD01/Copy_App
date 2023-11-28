@@ -48,7 +48,7 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
         <AntDesign name="right" size={14} color="black" />
       </TouchableOpacity>
       {regionesDeChile.map((item, index) => (
-        <React.Fragment key={index}>
+        <View key={index}>
           <TouchableOpacity
             onPress={() => toggleRegion(item.region)}
             style={{
@@ -95,7 +95,7 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
                 </Text>
               </TouchableOpacity>
             ))}
-        </React.Fragment>
+        </View>
       ))}
     </Animated.ScrollView>
   );

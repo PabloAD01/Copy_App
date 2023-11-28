@@ -5,7 +5,7 @@
  * @format
  */
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -46,6 +46,8 @@ import GlobalProvider from './src/providers/GlobalProvider';
 import {HeaderBackButton} from '@react-navigation/elements';
 import EditProfile from './src/screens/EditProfile';
 import MyAdsScreen from './src/screens/MyAdsScreen';
+import LikeButton from './src/components/LikeButton';
+import Icon2 from 'react-native-vector-icons/Entypo';
 
 enableLatestRenderer();
 
@@ -85,6 +87,14 @@ function App(): JSX.Element {
     flex: 1,
   };
 
+  const [likeState, setLikeState] = useState<boolean | null>(null);
+
+  const handlePressLike = () => {
+    setLikeState(prevLikeState =>
+      prevLikeState === null ? true : !prevLikeState,
+    );
+  };
+
   return (
     <AuthProvider>
       <GlobalProvider>
@@ -109,7 +119,35 @@ function App(): JSX.Element {
               />
               <Drawer.Screen
                 name="Product"
-                options={{headerShown: false}}
+                options={({navigation}) => ({
+                  title: 'Avisos',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                  headerLeft: () => (
+                    <HeaderBackButton
+                      onPress={() => {
+                        navigation.navigate('Home');
+                      }}
+                      tintColor="#fff"
+                    />
+                  ),
+                  headerRight: () => (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 24,
+                        marginRight: 16,
+                      }}>
+                      <LikeButton like={likeState} onPress={handlePressLike} />
+                      <TouchableOpacity>
+                        <Icon2 name="share" size={20} color={'#fff'} />
+                      </TouchableOpacity>
+                    </View>
+                  ),
+                })}
                 component={ProductScreen}
               />
               <Drawer.Screen

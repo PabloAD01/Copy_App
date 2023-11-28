@@ -154,7 +154,7 @@ const PostAdScreen = (props: Props) => {
         validationSchema={validationSchema}
         onSubmit={handlePostAd}>
         {({handleChange, handleSubmit, values, errors, touched}) => (
-          <ScrollView style={{height: '100%'}}>
+          <ScrollView style={{height: '100%', paddingHorizontal: 10}}>
             <View
               style={{
                 width: '100%',
@@ -333,7 +333,7 @@ const PostAdScreen = (props: Props) => {
             </View>
             <TouchableOpacity
               style={{
-                backgroundColor: '#FF842C',
+                backgroundColor: '#0977B6',
                 paddingVertical: 16,
                 paddingHorizontal: 32,
                 borderRadius: 8,

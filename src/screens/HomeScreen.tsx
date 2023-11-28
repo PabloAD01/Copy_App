@@ -13,7 +13,7 @@ type Props = {};
 
 export interface IProduct {
   owner: string;
-  id: number;
+  _id: string;
   title: string;
   description: string;
   price: string;
@@ -35,8 +35,8 @@ export interface IProduct {
 }
 
 const HomeScreen = (props: Props) => {
-  const [products, setProducts] = useState([]);
-  const [products2, setProducts2] = useState([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [products2, setProducts2] = useState<IProduct[]>([]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -48,7 +48,7 @@ const HomeScreen = (props: Props) => {
           images: product.imageUrls,
           price: product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
         }));
-        setProducts(products);
+        setProducts(prevProducts => [...prevProducts, ...products]);
       } catch (error: any) {
         console.error('Error fetching products:', error.message);
       }
