@@ -2,14 +2,7 @@ import React, {useContext, useState} from 'react';
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {regionesDeChile} from '../constants/Regions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
-import {string} from 'yup';
-import {GlobalContext} from '../providers/GlobalProvider';
+import Animated from 'react-native-reanimated';
 
 type Props = {};
 

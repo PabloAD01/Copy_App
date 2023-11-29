@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   Modal,
   Alert,
@@ -13,32 +13,40 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Yup from 'yup';
-import {Formik} from 'formik';
+import {Formik, FormikProps} from 'formik';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../providers/AuthProvider';
 import {
   LoginScreenNavigationProp,
   RegisterScreenNavigationProp,
 } from '../components/modals/AuthModal';
+import LocationsModal, {Region} from '../components/modals/LocationsModal';
 
 type Props = {};
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().min(8).required('Password is required'),
-  name: Yup.string().required('Name is required').required('Name is required'),
-  lastName: Yup.string()
-    .required('Last Name is required')
-    .required('Last Name is required'),
-  location: Yup.string()
-    .required('Location is required')
-    .required('Location is required'),
+  name: Yup.string().max(20).required('Name is required'),
+  lastName: Yup.string().max(20).required('Last Name is required'),
+  location: Yup.string().required('Location is required'),
 });
 
 const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
   const {Register, setLoginHeight} = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
   const [reRender, setReRender] = useState(false);
+  const [isRegionModalVisible, setRegionModalVisible] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<Region | null>(null);
+  const formikRef = useRef<
+    FormikProps<{
+      email: string;
+      password: string;
+      name: string;
+      lastName: string;
+      location: string;
+    }>
+  >(null);
 
   const focused = useIsFocused();
 
@@ -57,6 +65,13 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
     const {height} = event.nativeEvent.layout;
     setLoginHeight(height);
   };
+
+  const setLocation = (location: string) => {
+    if (formikRef.current) {
+      formikRef.current.setFieldValue('location', location);
+    }
+  };
+  setLocation(selectedLocation ? selectedLocation.region : '');
 
   const handleRegister = async (values: {
     email: string;
@@ -78,6 +93,8 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
       console.log(error);
     }
   };
+
+  console.log(selectedLocation?.region);
 
   return (
     <View onLayout={onLayout} style={{backgroundColor: 'white', padding: 20}}>
@@ -114,6 +131,7 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
           lastName: '',
           location: '',
         }}
+        innerRef={formikRef}
         validationSchema={RegisterSchema}
         onSubmit={handleRegister}>
         {({
@@ -140,7 +158,7 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
             )}
 
             <TextInput
-              placeholder="Last Name"
+              placeholder="Last name"
               style={{height: 40, width: '100%', borderBottomWidth: 1}}
               onChangeText={text => {
                 handleChange('lastName')(text);
@@ -152,18 +170,24 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
             {touched.lastName && errors.lastName && (
               <Text style={styles.errorText}>{errors.lastName}</Text>
             )}
-
-            <TextInput
-              placeholder="Location"
-              style={{height: 40, width: '100%', borderBottomWidth: 1}}
-              onChangeText={text => {
-                handleChange('location')(text);
-                setError(null);
+            <TouchableOpacity
+              style={{
+                height: 40,
+                width: '100%',
+                borderBottomWidth: 1,
+                justifyContent: 'center',
               }}
-              onBlur={handleBlur('location')}
-              value={values.location}
-            />
-            {touched.location && errors.location && (
+              onPress={() => setRegionModalVisible(true)}>
+              <Text
+                style={{
+                  color: 'black',
+                }}>
+                {' '}
+                {values.location}
+              </Text>
+            </TouchableOpacity>
+
+            {values.location === '' && errors.location && (
               <Text style={styles.errorText}>{errors.location}</Text>
             )}
             <TextInput
@@ -207,6 +231,11 @@ const RegisterModal = ({route, navigation}: RegisterScreenNavigationProp) => {
           </View>
         )}
       </Formik>
+      <LocationsModal
+        isVisible={isRegionModalVisible}
+        closeModal={() => setRegionModalVisible(false)}
+        setSelectedLocation={setSelectedLocation}
+      />
     </View>
   );
 };
