@@ -48,6 +48,7 @@ import EditProfile from './src/screens/EditProfile';
 import MyAdsScreen from './src/screens/MyAdsScreen';
 import LikeButton from './src/components/LikeButton';
 import Icon2 from 'react-native-vector-icons/Entypo';
+import CategoriesScreen from './src/screens/CategoriesScreen';
 
 enableLatestRenderer();
 
@@ -61,6 +62,7 @@ type RootStackParamList = {
   Map: {product: IProduct};
   PostAd: undefined;
   Locations: {setLocation: (region: string) => void};
+  Categories: {setCategory: (region: string) => void};
   MyAccount: undefined;
 };
 
@@ -191,6 +193,25 @@ function App(): JSX.Element {
                   ),
                 })}
                 component={Locations}
+              />
+              <Drawer.Screen
+                name="Categories"
+                options={({navigation}) => ({
+                  title: 'Categorias',
+                  headerStyle: {
+                    backgroundColor: '#FF842C',
+                  },
+                  headerTintColor: '#fff',
+                  headerLeft: () => (
+                    <HeaderBackButton
+                      onPress={() => {
+                        navigation.navigate('PostAd');
+                      }}
+                      tintColor="#fff"
+                    />
+                  ),
+                })}
+                component={CategoriesScreen}
               />
               <Drawer.Screen
                 name="MyAccount"

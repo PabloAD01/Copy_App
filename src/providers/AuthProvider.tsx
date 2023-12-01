@@ -31,6 +31,7 @@ export const AuthContext = createContext({
     description: string,
     price: number,
     location: string,
+    category: string,
     images: string[],
   ) => {},
   loggedIn: false,
@@ -146,6 +147,7 @@ const AuthProvider = (props: Props) => {
     description: string,
     price: number,
     location: string,
+    category: string,
     images: string[],
   ) => {
     try {
@@ -160,6 +162,7 @@ const AuthProvider = (props: Props) => {
           description,
           price,
           location,
+          category,
           images,
         }),
       });

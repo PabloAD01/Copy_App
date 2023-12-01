@@ -6,7 +6,13 @@ import Animated from 'react-native-reanimated';
 
 type Props = {};
 
-const Locations = ({navigation, route}: {navigation: any; route: any}) => {
+const CategoriesScreen = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
   const [expandedRegions, setExpandedRegions] = useState<string[]>([]);
 
   const toggleRegion = (region: string) => {
@@ -18,7 +24,7 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const handleRegion = (comuna: string, region: string) => {
-    route.params.setLocation(comuna);
+    route.params.setCategory(comuna);
     toggleRegion(region);
     navigation.navigate('PostAd');
   };
@@ -92,4 +98,4 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-export default Locations;
+export default CategoriesScreen;

@@ -57,6 +57,7 @@ const PostAdScreen = (props: Props) => {
       price: number;
       description: string;
       location: string;
+      category: string;
       images: string[];
     }>
   >(null);
@@ -97,6 +98,16 @@ const PostAdScreen = (props: Props) => {
     }
   };
 
+  const setCategory = (category: string) => {
+    if (formikRef.current) {
+      formikRef.current.setFieldValue('category', category);
+    }
+  };
+
+  const handleCategories = () => {
+    navigation.navigate('Categories', {setCategory});
+  };
+
   const handleLocations = () => {
     navigation.navigate('Locations', {setLocation});
   };
@@ -107,6 +118,7 @@ const PostAdScreen = (props: Props) => {
     price: number;
     description: string;
     location: string;
+    category: string;
     images: string[];
   }) => {
     try {
@@ -116,6 +128,7 @@ const PostAdScreen = (props: Props) => {
         values.description,
         values.price,
         values.location,
+        values.category,
         values.images,
       );
       if (formikRef.current) {
@@ -148,6 +161,7 @@ const PostAdScreen = (props: Props) => {
           price: 0,
           description: '',
           location: '',
+          category: '',
           images: [''],
         }}
         innerRef={formikRef}
@@ -239,14 +253,21 @@ const PostAdScreen = (props: Props) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                }}>
+                }}
+                onPress={handleCategories}>
                 <View>
                   <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-                    Categoría
+                    Categorias
                   </Text>
-                  <Text style={{color: 'black', fontWeight: 'bold'}}>
-                    Vendo
-                  </Text>
+                  {values.category === '' ? (
+                    <Text style={{color: 'black', fontWeight: 'bold'}}>
+                      Seleccione una categoría
+                    </Text>
+                  ) : (
+                    <Text style={{color: 'black', fontWeight: 'bold'}}>
+                      {values.category}
+                    </Text>
+                  )}
                 </View>
                 <AntDesign name="right" size={14} color="black" />
               </TouchableOpacity>
