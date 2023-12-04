@@ -18,6 +18,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../providers/AuthProvider';
 import {LoginScreenNavigationProp} from '../components/modals/AuthModal';
 import {HomeScreenNavigationProp} from '../../App';
+import LoginForm from '../components/forms/LoginForm';
 
 type Props = {};
 
@@ -27,35 +28,11 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginModal = ({route, navigation}: LoginScreenNavigationProp) => {
-  const {LoginWithEmailAndPassword, setLoginHeight} = useContext(AuthContext);
-  const [error, setError] = useState<string | null>(null);
-  const [reRender, setReRender] = useState(false);
-
-  const focused = useIsFocused();
-
-  useEffect(() => {
-    console.log('reRender');
-    setTimeout(() => {
-      setReRender(prevState => !prevState);
-    }, 1000);
-  }, [focused]);
-
-  const toggleScreen = () => {
-    navigation.replace('Register');
-  };
+  const {setLoginHeight} = useContext(AuthContext);
 
   const onLayout = (event: any) => {
     const {height} = event.nativeEvent.layout;
     setLoginHeight(height);
-  };
-
-  const handleLogin = async (values: {email: string; password: string}) => {
-    try {
-      const {email, password} = values;
-      const response = await LoginWithEmailAndPassword(email, password);
-    } catch (error) {
-      console.log('ERROR LOGIN', error);
-    }
   };
 
   return (
@@ -85,69 +62,7 @@ const LoginModal = ({route, navigation}: LoginScreenNavigationProp) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <Formik
-        initialValues={{email: '', password: ''}}
-        validationSchema={LoginSchema}
-        onSubmit={handleLogin}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-        }) => (
-          <View style={{width: '100%', gap: 10}}>
-            <TextInput
-              placeholder="Email"
-              style={{
-                height: 40,
-                width: '100%',
-                borderBottomWidth: 1,
-                color: 'black',
-              }}
-              onChangeText={text => {
-                handleChange('email')(text);
-                setError(null);
-              }}
-              onBlur={handleBlur('email')}
-              value={values.email}
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-
-            <TextInput
-              placeholder="Password"
-              style={{
-                height: 40,
-                width: '100%',
-                borderBottomWidth: 1,
-                color: 'black',
-              }}
-              onChangeText={text => {
-                handleChange('password')(text);
-                setError(null);
-              }}
-              onBlur={handleBlur('password')}
-              value={values.password}
-              secureTextEntry
-            />
-            {touched.password && errors.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            )}
-            {error && <Text style={styles.errorText}>{error}</Text>}
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => handleSubmit()}>
-              <Text style={styles.textStyle}>Log in</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={toggleScreen}>
-              <Text>To Register</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+      <LoginForm navigation={navigation} route={route} />
     </View>
   );
 };
