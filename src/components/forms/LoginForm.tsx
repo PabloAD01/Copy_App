@@ -27,8 +27,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = ({route, navigation}: LoginScreenNavigationProp) => {
-  const {LoginWithEmailAndPassword, setLoginHeight} = useContext(AuthContext);
-  const [error, setError] = useState<string | null>(null);
+  const {LoginWithEmailAndPassword, error, setError} = useContext(AuthContext);
   const [reRender, setReRender] = useState(false);
 
   const focused = useIsFocused();
@@ -47,9 +46,9 @@ const LoginForm = ({route, navigation}: LoginScreenNavigationProp) => {
   const handleLogin = async (values: {email: string; password: string}) => {
     try {
       const {email, password} = values;
-      const response = await LoginWithEmailAndPassword(email, password);
+      await LoginWithEmailAndPassword(email, password);
     } catch (error) {
-      console.log('ERROR LOGIN', error);
+      console.log('AAA', error);
     }
   };
 
@@ -78,7 +77,6 @@ const LoginForm = ({route, navigation}: LoginScreenNavigationProp) => {
           {touched.email && errors.email && (
             <Text style={styles.errorText}>{errors.email}</Text>
           )}
-
           <TextInput
             placeholder="Password"
             style={{
@@ -98,7 +96,7 @@ const LoginForm = ({route, navigation}: LoginScreenNavigationProp) => {
           {touched.password && errors.password && (
             <Text style={styles.errorText}>{errors.password}</Text>
           )}
-          {error && <Text style={styles.errorText}>{error}</Text>}
+          {error && <Text style={{color: 'red'}}>{error}</Text>}
           <TouchableOpacity
             style={[styles.button, styles.buttonClose]}
             onPress={() => handleSubmit()}>

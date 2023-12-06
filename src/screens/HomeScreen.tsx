@@ -48,6 +48,7 @@ const HomeScreen = (props: Props) => {
           images: product.imageUrls,
           price: product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
         }));
+
         setProducts(prevProducts => [...prevProducts, ...products]);
       } catch (error: any) {
         console.error('Error fetching products:', error.message);

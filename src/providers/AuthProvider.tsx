@@ -11,6 +11,7 @@ export const AuthContext = createContext({
   name: '',
   email: '',
   location: '',
+  error: null as string | null,
   LoginWithEmailAndPassword: (email: string, password: string) => {},
   Register: (
     email: string,
@@ -39,6 +40,7 @@ export const AuthContext = createContext({
   setLoginHeight: (loginHeight: number) => {},
   loginHeight: 500,
   logoutUser: () => {},
+  setError: (error: string | null) => {},
 });
 
 const AuthProvider = (props: Props) => {
@@ -48,6 +50,7 @@ const AuthProvider = (props: Props) => {
   const [location, setLocation] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginHeight, setLoginHeight] = useState(500);
+  const [error, setError] = useState<string | null>(null);
 
   const LoginWithEmailAndPassword = async (email: string, password: string) => {
     try {
@@ -61,6 +64,7 @@ const AuthProvider = (props: Props) => {
 
       if (response.ok) {
         setLoggedIn(true);
+        setError(null);
         const data = await response.json();
         console.log(data.msg);
         try {
@@ -72,13 +76,14 @@ const AuthProvider = (props: Props) => {
           setLocation(data.user.location);
           console.log(data);
         } catch (error) {
-          console.error('Error al obtener usuario:', error);
+          console.error('Error al obtener usuario1:', error);
         }
       } else {
-        console.error('Error al iniciar sesión2:', response);
+        const errorData = await response.json();
+        setError(errorData.msg);
       }
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      console.error('Error al iniciar sesión3:', error);
     }
   };
 
@@ -111,7 +116,8 @@ const AuthProvider = (props: Props) => {
           setLocation(data.user.location);
           console.log('PERSONAL DATA', data);
         } catch (error) {
-          console.error(error);
+          const errorData = await response.json();
+          setError(errorData.msg);
         }
       }
     } catch (error) {
@@ -195,6 +201,7 @@ const AuthProvider = (props: Props) => {
         name,
         email,
         location,
+        error,
         LoginWithEmailAndPassword,
         Register,
         updateUser,
@@ -204,6 +211,7 @@ const AuthProvider = (props: Props) => {
         setLoggedIn,
         setLoginHeight,
         loginHeight,
+        setError,
       }}>
       {props.children}
     </AuthContext.Provider>
