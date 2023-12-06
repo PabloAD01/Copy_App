@@ -1,8 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {regionesDeChile} from '../constants/Regions';
+import {View, Text, ScrollView, TouchableOpacity, LogBox} from 'react-native';
+import {categorias} from '../constants/Categories';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Animated from 'react-native-reanimated';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 type Props = {};
 
@@ -31,23 +35,10 @@ const CategoriesScreen = ({
 
   return (
     <Animated.ScrollView>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <Text style={{fontWeight: '600', color: 'black'}}>Todo Chile</Text>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
-      {regionesDeChile.map((item, index) => (
+      {categorias.map((item, index) => (
         <View key={index}>
           <TouchableOpacity
-            onPress={() => toggleRegion(item.region)}
+            onPress={() => toggleRegion(item.name)}
             style={{
               width: '100%',
               backgroundColor: 'white',
@@ -57,17 +48,15 @@ const CategoriesScreen = ({
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-            <Text style={{fontWeight: '600', color: 'black'}}>
-              {item.region}
-            </Text>
+            <Text style={{fontWeight: '600', color: 'black'}}>{item.name}</Text>
             <AntDesign
-              name={expandedRegions.includes(item.region) ? 'up' : 'right'}
+              name={expandedRegions.includes(item.name) ? 'up' : 'right'}
               size={14}
               color="black"
             />
           </TouchableOpacity>
-          {expandedRegions.includes(item.region) &&
-            item.comunas.map((comuna, comunaIndex) => (
+          {expandedRegions.includes(item.name) &&
+            item.type?.map((comuna, comunaIndex) => (
               <TouchableOpacity
                 key={comunaIndex}
                 style={{
@@ -79,7 +68,7 @@ const CategoriesScreen = ({
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 }}
-                onPress={() => handleRegion(comuna, item.region)}>
+                onPress={() => handleRegion(comuna, item.name)}>
                 <Text
                   style={{
                     fontWeight: '600',

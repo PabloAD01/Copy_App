@@ -3,6 +3,11 @@ import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {regionesDeChile} from '../constants/Regions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Animated from 'react-native-reanimated';
+import {LogBox} from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 type Props = {};
 
