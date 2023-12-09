@@ -39,9 +39,9 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-        }}>
+        }}
+        onPress={() => handleRegion('Todo Chile', 'Todo Chile')}>
         <Text style={{fontWeight: '600', color: 'black'}}>Todo Chile</Text>
-        <AntDesign name="right" size={14} color="black" />
       </TouchableOpacity>
       {regionesDeChile.map((item, index) => (
         <View key={index}>
