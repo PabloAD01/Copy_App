@@ -31,8 +31,10 @@ const ProductsCard = ({data, onPress}: Props) => {
       />
       <View style={styles.cardContent}>
         <View>
-          <View style={{flexDirection: 'row', gap: 10}}>
+          <View style={{flexDirection: 'row', gap: 4}}>
             <Text style={{color: '#757575'}}>{data.location}</Text>
+            <Text style={{color: '#757575'}}>•</Text>
+            <Text style={{color: '#757575'}}>{data.createdAt}</Text>
           </View>
           <Text style={{color: '#333333'}}>{data.title}</Text>
         </View>

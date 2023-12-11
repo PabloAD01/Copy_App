@@ -12,14 +12,12 @@ LogBox.ignoreLogs([
 type Props = {};
 
 const Locations = ({navigation, route}: {navigation: any; route: any}) => {
-  const [expandedRegions, setExpandedRegions] = useState<string[]>([]);
+  const [expandedRegions, setExpandedRegions] = useState<string | null>(null);
 
-  const toggleRegion = (region: string) => {
-    if (expandedRegions.includes(region)) {
-      setExpandedRegions(expandedRegions.filter(r => r !== region));
-    } else {
-      setExpandedRegions([...expandedRegions, region]);
-    }
+  const toggleRegion = (category: string) => {
+    setExpandedRegions(prevCategory =>
+      prevCategory === category ? null : category,
+    );
   };
 
   const handleRegion = (comuna: string, region: string) => {
@@ -60,12 +58,12 @@ const Locations = ({navigation, route}: {navigation: any; route: any}) => {
               {item.region}
             </Text>
             <AntDesign
-              name={expandedRegions.includes(item.region) ? 'up' : 'right'}
+              name={expandedRegions?.includes(item.region) ? 'up' : 'right'}
               size={14}
               color="black"
             />
           </TouchableOpacity>
-          {expandedRegions.includes(item.region) &&
+          {expandedRegions?.includes(item.region) &&
             item.comunas.map((comuna, comunaIndex) => (
               <TouchableOpacity
                 key={comunaIndex}

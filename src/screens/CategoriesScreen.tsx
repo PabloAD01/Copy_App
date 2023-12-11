@@ -17,14 +17,14 @@ const CategoriesScreen = ({
   navigation: any;
   route: any;
 }) => {
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [expandedCategories, setExpandedCategories] = useState<string | null>(
+    null,
+  );
 
   const toggleCategory = (category: string) => {
-    if (expandedCategories.includes(category)) {
-      setExpandedCategories(expandedCategories.filter(r => r !== category));
-    } else {
-      setExpandedCategories([...expandedCategories, category]);
-    }
+    setExpandedCategories(prevCategory =>
+      prevCategory === category ? null : category,
+    );
   };
 
   const handleCategory = (subcategory: string, category: string) => {
@@ -69,14 +69,14 @@ const CategoriesScreen = ({
                 {item.name}
               </Text>
               <AntDesign
-                name={expandedCategories.includes(item.name) ? 'up' : 'right'}
+                name={expandedCategories?.includes(item.name) ? 'up' : 'right'}
                 size={14}
                 color="black"
               />
             </TouchableOpacity>
           )}
 
-          {expandedCategories.includes(item.name) &&
+          {expandedCategories?.includes(item.name) &&
             item.type?.map((subcategory, subcategoryIndex) => (
               <TouchableOpacity
                 key={subcategoryIndex}

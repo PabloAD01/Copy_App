@@ -366,7 +366,3 @@ export const regionesDeChile = [
     ],
   },
 ];
-
-/* // Para acceder a una región específica y sus comunas:
-    const regionElegida = regionesDeChile[0]; // Región de Arica y Parinacota
-    const comunasDeLaRegion = regionElegida.comunas; // ["Arica", "Camarones", "Putre", "General Lagos"] */

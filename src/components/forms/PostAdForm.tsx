@@ -311,6 +311,7 @@ const PostAdForm = (props: Props) => {
                   color: 'black',
                 }}
                 placeholder="Precio ($)"
+                keyboardType="numeric"
                 onChangeText={handleChange('price')}
                 value={values.price.toString()}
               />

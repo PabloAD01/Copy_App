@@ -49,7 +49,11 @@ const HomeScreen = (props: Props) => {
           price: product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
         }));
 
-        setProducts(prevProducts => [...prevProducts, ...products]);
+        const sortedProducts = products.sort((a: any, b: any) => {
+          return (b.createdAt || '').localeCompare(a.createdAt || '');
+        });
+
+        setProducts(sortedProducts);
       } catch (error: any) {
         console.error('Error fetching products:', error.message);
       }
