@@ -22,6 +22,8 @@ import {
   launchImageLibrary,
   ImageLibraryOptions,
 } from 'react-native-image-picker';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import CarsForm from './CategoriesOptionsForm.tsx/CarsForm';
 
 type Props = {};
 
@@ -46,6 +48,8 @@ const dummyImage =
 
 const PostAdForm = (props: Props) => {
   const [galleryPhoto, setGalleryPhoto] = useState<string[]>([]);
+  const [type, setType] = useState(true);
+
   const {PostAd, name} = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const formikRef = useRef<
@@ -292,6 +296,86 @@ const PostAdForm = (props: Props) => {
               </View>
               <AntDesign name="right" size={14} color="black" />
             </TouchableOpacity>
+            {values.category &&
+              values.category !== 'Vendo' &&
+              values.category !== 'Arriendo' &&
+              values.category !== 'Arriendo de temporada' && (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'white',
+                    gap: 10,
+                    paddingVertical: 24,
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      gap: 2,
+                    }}>
+                    <TouchableOpacity
+                      style={
+                        type
+                          ? {
+                              paddingVertical: 8,
+                              backgroundColor: '#FF6205',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              width: 140,
+                            }
+                          : {
+                              paddingVertical: 8,
+                              backgroundColor: '#B6B6B6',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              width: 140,
+                            }
+                      }
+                      onPress={() => setType(true)}>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          color: 'white',
+                          textTransform: 'uppercase',
+                        }}>
+                        Vendo
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={
+                        type
+                          ? {
+                              paddingVertical: 8,
+                              backgroundColor: '#B6B6B6',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              width: 140,
+                            }
+                          : {
+                              paddingVertical: 8,
+                              backgroundColor: '#FF6205',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              width: 140,
+                            }
+                      }
+                      onPress={() => setType(false)}>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          color: 'white',
+                          textTransform: 'uppercase',
+                        }}>
+                        Busco
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            {values.category === 'Autos, camionetas y 4x4' && (
+              <CarsForm handleLocations={handleLocations} />
+            )}
             <View
               style={{
                 width: '100%',
