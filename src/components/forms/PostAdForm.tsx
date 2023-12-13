@@ -24,6 +24,8 @@ import {
 } from 'react-native-image-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CarsForm from './CategoriesOptionsForm.tsx/CarsForm';
+import MotorbikeForm from './CategoriesOptionsForm.tsx/MotorbikeForm';
+import LargeVehiclesForm from './CategoriesOptionsForm.tsx/LargeVehiclesForm';
 
 type Props = {};
 
@@ -374,7 +376,16 @@ const PostAdForm = (props: Props) => {
                 </View>
               )}
             {values.category === 'Autos, camionetas y 4x4' && (
-              <CarsForm handleLocations={handleLocations} />
+              <CarsForm handleLocations={handleLocations} type={type} />
+            )}
+            {values.category === 'Motos' && (
+              <MotorbikeForm handleLocations={handleLocations} type={type} />
+            )}
+            {values.category === 'Buses, camiones, furgones' && (
+              <LargeVehiclesForm
+                handleLocations={handleLocations}
+                type={type}
+              />
             )}
             <View
               style={{

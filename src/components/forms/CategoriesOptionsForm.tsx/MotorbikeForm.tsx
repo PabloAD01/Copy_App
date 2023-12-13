@@ -7,28 +7,9 @@ type Props = {
   type: boolean;
 };
 
-const CarsForm = ({handleLocations, type}: Props) => {
+const MotorbikeForm = ({handleLocations, type}: Props) => {
   return (
     <>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>Marca</Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione marca del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
       <TouchableOpacity
         style={{
           width: '100%',
@@ -48,6 +29,7 @@ const CarsForm = ({handleLocations, type}: Props) => {
         </View>
         <AntDesign name="right" size={14} color="black" />
       </TouchableOpacity>
+
       <TouchableOpacity
         style={{
           width: '100%',
@@ -60,57 +42,14 @@ const CarsForm = ({handleLocations, type}: Props) => {
         }}
         onPress={handleLocations}>
         <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-            Transimisión (cambio)
-          </Text>
+          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>Cilindrada</Text>
           <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione transimisión del vehículo
+            Seleccione cilindrada del vehículo
           </Text>
         </View>
         <AntDesign name="right" size={14} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-            Combustible
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Tipo de combustible del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-            Tipo de vehículo
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione clase del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
+
       <View
         style={{
           width: '100%',
@@ -162,4 +101,4 @@ const CarsForm = ({handleLocations, type}: Props) => {
   );
 };
 
-export default CarsForm;
+export default MotorbikeForm;
