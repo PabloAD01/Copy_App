@@ -23,9 +23,11 @@ import {
   ImageLibraryOptions,
 } from 'react-native-image-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import CarsForm from './CategoriesOptionsForm.tsx/CarsForm';
-import MotorbikeForm from './CategoriesOptionsForm.tsx/MotorbikeForm';
-import LargeVehiclesForm from './CategoriesOptionsForm.tsx/LargeVehiclesForm';
+import CarsForm from './CategoriesOptions/CarsForm';
+import MotorbikeForm from './CategoriesOptions/MotorbikeForm';
+import LargeVehiclesForm from './CategoriesOptions/LargeVehiclesForm';
+import FashionForm from './CategoriesOptions/FashionForm';
+import CategoriesOptionsForms from './CategoriesOptionsForms';
 
 type Props = {};
 
@@ -51,7 +53,6 @@ const dummyImage =
 const PostAdForm = (props: Props) => {
   const [galleryPhoto, setGalleryPhoto] = useState<string[]>([]);
   const [type, setType] = useState(true);
-
   const {PostAd, name} = useContext(AuthContext);
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const formikRef = useRef<
@@ -298,95 +299,12 @@ const PostAdForm = (props: Props) => {
               </View>
               <AntDesign name="right" size={14} color="black" />
             </TouchableOpacity>
-            {values.category &&
-              values.category !== 'Vendo' &&
-              values.category !== 'Arriendo' &&
-              values.category !== 'Arriendo de temporada' && (
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'white',
-                    gap: 10,
-                    paddingVertical: 24,
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      gap: 2,
-                    }}>
-                    <TouchableOpacity
-                      style={
-                        type
-                          ? {
-                              paddingVertical: 8,
-                              backgroundColor: '#FF6205',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              width: 140,
-                            }
-                          : {
-                              paddingVertical: 8,
-                              backgroundColor: '#B6B6B6',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              width: 140,
-                            }
-                      }
-                      onPress={() => setType(true)}>
-                      <Text
-                        style={{
-                          fontWeight: 'bold',
-                          color: 'white',
-                          textTransform: 'uppercase',
-                        }}>
-                        Vendo
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={
-                        type
-                          ? {
-                              paddingVertical: 8,
-                              backgroundColor: '#B6B6B6',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              width: 140,
-                            }
-                          : {
-                              paddingVertical: 8,
-                              backgroundColor: '#FF6205',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              width: 140,
-                            }
-                      }
-                      onPress={() => setType(false)}>
-                      <Text
-                        style={{
-                          fontWeight: 'bold',
-                          color: 'white',
-                          textTransform: 'uppercase',
-                        }}>
-                        Busco
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            {values.category === 'Autos, camionetas y 4x4' && (
-              <CarsForm handleLocations={handleLocations} type={type} />
-            )}
-            {values.category === 'Motos' && (
-              <MotorbikeForm handleLocations={handleLocations} type={type} />
-            )}
-            {values.category === 'Buses, camiones, furgones' && (
-              <LargeVehiclesForm
-                handleLocations={handleLocations}
-                type={type}
-              />
-            )}
+            <CategoriesOptionsForms
+              type={type}
+              setType={setType}
+              category={values.category}
+              handleLocations={handleLocations}
+            />
             <View
               style={{
                 width: '100%',
