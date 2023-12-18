@@ -1,10 +1,28 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext } from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { HomeScreenNavigationProp } from '../../../../App';
+import { AuthContext } from '../../../providers/AuthProvider';
 
-type Props = {};
+type Props = {
+  modalVisible: boolean;
+  setModalVisible: (modalVisible: boolean) => void;
+};
 
-const ChatButton = (props: Props) => {
+const ChatButton = ({modalVisible, setModalVisible}: Props) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const {loggedIn} = useContext(AuthContext);
+
+  const handlePress = () => {
+    if (!loggedIn) {
+      setModalVisible(true);
+      return;
+    }
+
+    navigation.navigate('MyAccount');
+  };
   return (
     <TouchableOpacity
       style={{
@@ -13,7 +31,8 @@ const ChatButton = (props: Props) => {
         flexDirection: 'row',
         borderRadius: 5,
         padding: 10,
-      }}>
+      }}
+      onPress={handlePress}>
       <Entypo name="chat" size={20} color={'#6A6A6A'} style={{flex: 1}} />
       <Text
         style={{

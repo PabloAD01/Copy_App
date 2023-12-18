@@ -5,6 +5,7 @@ import LargeVehiclesForm from './CategoriesOptions/LargeVehiclesForm';
 import MotorbikeForm from './CategoriesOptions/MotorbikeForm';
 import {View, TouchableOpacity, Text} from 'react-native';
 import KidsForm from './CategoriesOptions/KidsForm';
+import PropertyForm from './CategoriesOptions/PropertyForm';
 
 type Props = {
   handleLocations: () => void;
@@ -98,6 +99,10 @@ const CategoriesOptionsForms = ({
             </View>
           </View>
         )}
+
+      {(category === 'Vendo' ||
+        category === 'Arriendo' ||
+        category === 'Arriendo de temporada') && <PropertyForm />}
       {category === 'Autos, camionetas y 4x4' && (
         <CarsForm handleLocations={handleLocations} type={type} />
       )}

@@ -93,7 +93,10 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
-        <ChatButton />
+        <ChatButton
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
         <MyAccountButton
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
