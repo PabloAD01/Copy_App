@@ -11,21 +11,14 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import FacebookButton from '../buttons/socials/FacebookButton';
-import YoutubeButton from '../buttons/socials/YoutubeButton';
-import LinkedinButton from '../buttons/socials/LinkedinButton';
-import InstagramButton from '../buttons/socials/InstagramButton';
-import GooglePlayButton from '../buttons/socials/GooglePlayButton';
-import AdsButton from '../buttons/options/AdsButton';
-import PostAdButton from '../buttons/options/PostAdButton';
-import ChatButton from '../buttons/options/ChatButton';
-import MyAccountButton from '../buttons/options/MyAccountButton';
-import CustomerServiceButton from '../buttons/options/CustomerServiceButton';
-import GeneralInfoButton from '../buttons/options/GeneralInfoButton';
+
 import AuthModal from '../modals/AuthModal';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from '../../providers/AuthProvider';
 import LogoutButton from '../buttons/options/LogoutButton';
+import SocialsButtons from '../buttons/socials/SocialsButtons';
+import EnterAccountButton from '../buttons/options/EnterAccountButton';
+import OptionsButton from '../buttons/options/OptionsButton';
 
 type Props = {};
 
@@ -66,43 +59,11 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
             <Text style={{color: 'white', fontWeight: '500'}}>{email}</Text>
           </View>
         ) : (
-          <TouchableOpacity
-            style={{
-              width: '100%',
-              backgroundColor: '#32589F',
-              padding: 14,
-              borderRadius: 30,
-              alignItems: 'center',
-            }}
-            onPress={() => setModalVisible(true)}>
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: '500',
-                letterSpacing: 1,
-                fontSize: 12,
-              }}>
-              INGRESAR A MI CUENTA
-            </Text>
-          </TouchableOpacity>
+          <EnterAccountButton setModalVisible={setModalVisible} />
         )}
       </View>
       <View style={{paddingHorizontal: 10, backgroundColor: 'white', gap: 10}}>
-        <AdsButton />
-        <PostAdButton
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
-        <ChatButton
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
-        <MyAccountButton
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
-        <CustomerServiceButton />
-        <GeneralInfoButton />
+        <OptionsButton setModalVisible={setModalVisible} />
       </View>
       <View
         style={{
@@ -111,11 +72,7 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
           gap: 5,
           flexDirection: 'row',
         }}>
-        <InstagramButton />
-        <FacebookButton />
-        <YoutubeButton />
-        <LinkedinButton />
-        <GooglePlayButton />
+        <SocialsButtons />
       </View>
       {loggedIn ? (
         <View
