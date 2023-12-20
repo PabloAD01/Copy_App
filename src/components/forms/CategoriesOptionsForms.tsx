@@ -102,7 +102,9 @@ const CategoriesOptionsForms = ({
 
       {(category === 'Vendo' ||
         category === 'Arriendo' ||
-        category === 'Arriendo de temporada') && <PropertyForm />}
+        category === 'Arriendo de temporada') && (
+        <PropertyForm category={category} />
+      )}
       {category === 'Autos, camionetas y 4x4' && (
         <CarsForm handleLocations={handleLocations} type={type} />
       )}
