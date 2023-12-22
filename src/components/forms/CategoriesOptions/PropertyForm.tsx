@@ -8,6 +8,15 @@ type Props = {
   category: string;
 };
 
+type PropertyInfo = {
+  Departamento: string[];
+  Casa: string[];
+  Oficina: string[];
+  Comercial: string[];
+  Terreno: string[];
+  Otros: string[];
+};
+
 const properties = [
   {
     label: 'Departamento',
@@ -23,7 +32,7 @@ const properties = [
   },
   {
     label: 'Comercial e industrial',
-    value: 'Comercial e industrial',
+    value: 'Comercial',
   },
   {
     label: 'Terreno',
@@ -31,9 +40,34 @@ const properties = [
   },
   {
     label: 'Estacionamiento, bodega u otro',
-    value: 'Estacionamiento, bodega u otro',
+    value: 'Otros',
   },
 ];
+
+const propertiesInfo: PropertyInfo | any = {
+  Departamento: [
+    'Superficie útil m²',
+    'Superficie total m²',
+    'Año construcción',
+    'Estacionamiento',
+    'Gastos comunes',
+  ],
+  Casa: [
+    'Superficie construida m²',
+    'Superficie total m²',
+    'Año construcción',
+    'Estacionamiento',
+    'Gastos comunes',
+  ],
+  Oficina: ['Superficie útil m²', 'Superficie total m²', 'Estacionamiento'],
+  Comercial: [
+    'Superficie construida m²',
+    'Superficie total m²',
+    'Estacionamiento',
+  ],
+  Terreno: ['Superficie total m²', 'Gastos comunes', 'Hectáreas de riego'],
+  Otros: ['Superficie total m²', 'Estacionamiento', 'Gastos comunes'],
+};
 
 const PropertyForm = ({category}: Props) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -54,7 +88,7 @@ const PropertyForm = ({category}: Props) => {
             color: '#FF842C',
             fontWeight: 'bold',
             position: 'absolute',
-            top: 10,
+            top: 14,
             left: 14,
           }}>
           Tipo de inmueble
@@ -66,6 +100,7 @@ const PropertyForm = ({category}: Props) => {
               color: 'black',
               fontWeight: 'bold',
               paddingHorizontal: 14,
+              marginTop: 2,
             },
             inputIOS: {
               height: '100%',
@@ -84,24 +119,24 @@ const PropertyForm = ({category}: Props) => {
           items={properties}
         />
         <AntDesign
-          style={{position: 'absolute', right: 20, top: 30}}
+          style={{position: 'absolute', right: 16, top: 30}}
           name="right"
           size={14}
           color="black"
         />
       </TouchableOpacity>
-      {(propertyType === 'Departamento' || propertyType === 'Casa') && (
-        <React.Fragment>
+      {propertyType &&
+        propertiesInfo[propertyType] &&
+        propertiesInfo[propertyType].map((info: string, index: number) => (
           <View
+            key={index}
             style={{
               width: '100%',
               backgroundColor: 'white',
               position: 'relative',
               padding: 16,
             }}>
-            <Text style={{color: 'gray'}}>
-              Superficie construida m² (Opcional)
-            </Text>
+            <Text style={{color: 'gray'}}>{info} (Opcional)</Text>
             <TextInput
               style={{
                 height: 40,
@@ -115,201 +150,25 @@ const PropertyForm = ({category}: Props) => {
               keyboardType="numeric"
               onChangeText={text => console.log(text)}
             />
+            {index === propertiesInfo[propertyType].length - 1 &&
+              propertyType !== 'Terreno' &&
+              propertyType !== 'Otros' &&
+              category === 'Vendo' && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{color: 'gray'}}>Propiedad nueva</Text>
+                  <CheckBox
+                    value={toggleCheckBox}
+                    onValueChange={setToggleCheckBox}
+                  />
+                </View>
+              )}
           </View>
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Superficie total m² (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Año de construcción (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Estacionamiento (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-          </View>
-
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Gastos comunes (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-            {category === 'Vendo' && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 16,
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{color: 'black'}}>Propiedad nueva</Text>
-                <CheckBox
-                  disabled={false}
-                  value={toggleCheckBox}
-                  onValueChange={newValue => setToggleCheckBox(newValue)}
-                />
-              </View>
-            )}
-          </View>
-        </React.Fragment>
-      )}
-      {propertyType === 'Oficina' && (
-        <>
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Superficie útil m² (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Superficie total m² (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-          </View>
-
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              position: 'relative',
-              padding: 16,
-            }}>
-            <Text style={{color: 'gray'}}>Estacionamiento (Opcional)</Text>
-            <TextInput
-              style={{
-                height: 40,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                backgroundColor: 'white',
-                borderBottomWidth: 1,
-                borderRadius: 8,
-                color: 'black',
-              }}
-              keyboardType="numeric"
-              onChangeText={text => console.log(text)}
-            />
-            {category === 'Vendo' && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 16,
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{color: 'black'}}>Propiedad nueva</Text>
-                <CheckBox
-                  disabled={false}
-                  value={toggleCheckBox}
-                  onValueChange={newValue => setToggleCheckBox(newValue)}
-                />
-              </View>
-            )}
-          </View>
-        </>
-      )}
+        ))}
     </React.Fragment>
   );
 };
