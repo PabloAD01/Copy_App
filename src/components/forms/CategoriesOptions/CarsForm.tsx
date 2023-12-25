@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity, View, Text, TextInput} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import RNPickerSelect from 'react-native-picker-select';
+import {fuelTypes} from '../../../constants/FuelType';
+import {years} from '../../../constants/Year';
+import {cars} from '../../../constants/Cars';
 
 type Props = {
   handleLocations: () => void;
@@ -8,109 +12,64 @@ type Props = {
 };
 
 const CarsForm = ({handleLocations, type}: Props) => {
+  const [fuel, setFuel] = useState('');
+  const [year, setYear] = useState('');
+
   return (
     <>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>Marca</Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione marca del vehículo
+      {cars.map(car => (
+        <TouchableOpacity
+          key={car.label}
+          style={{
+            width: '100%',
+            flex: 1,
+            height: 70,
+            backgroundColor: 'white',
+            position: 'relative',
+          }}>
+          <Text
+            style={{
+              color: '#FF842C',
+              fontWeight: 'bold',
+              position: 'absolute',
+              top: 14,
+              left: 14,
+            }}>
+            {car.label}
           </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>Año</Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione año del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-            Transimisión (cambio)
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione transimisión del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-            Combustible
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Tipo de combustible del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-          padding: 16,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        onPress={handleLocations}>
-        <View>
-          <Text style={{color: '#FF842C', fontWeight: 'bold'}}>
-            Tipo de vehículo
-          </Text>
-          <Text style={{color: 'black', fontWeight: 'bold'}}>
-            Seleccione clase del vehículo
-          </Text>
-        </View>
-        <AntDesign name="right" size={14} color="black" />
-      </TouchableOpacity>
+          <RNPickerSelect
+            style={{
+              inputAndroid: {
+                height: '100%',
+                color: 'black',
+                fontWeight: 'bold',
+                paddingHorizontal: 14,
+                marginTop: 4,
+              },
+              inputIOS: {
+                height: '100%',
+                borderRadius: 8,
+                color: 'black',
+                fontWeight: 'bold',
+                paddingHorizontal: 14,
+              },
+            }}
+            useNativeAndroidPickerStyle={false}
+            placeholder={{
+              label: 'Seleccione año del vehículo',
+              value: null,
+            }}
+            onValueChange={value => console.log(value)}
+            items={car.value}
+          />
+          <AntDesign
+            style={{position: 'absolute', right: 16, top: 30}}
+            name="right"
+            size={14}
+            color="black"
+          />
+        </TouchableOpacity>
+      ))}
       <View
         style={{
           width: '100%',

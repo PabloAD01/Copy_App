@@ -79,7 +79,7 @@ const PropertyForm = ({category}: Props) => {
         style={{
           width: '100%',
           flex: 1,
-          height: 80,
+          height: 70,
           backgroundColor: 'white',
           position: 'relative',
         }}>
@@ -100,7 +100,7 @@ const PropertyForm = ({category}: Props) => {
               color: 'black',
               fontWeight: 'bold',
               paddingHorizontal: 14,
-              marginTop: 2,
+              marginTop: 4,
             },
             inputIOS: {
               height: '100%',
