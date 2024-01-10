@@ -35,6 +35,7 @@ export const AuthContext = createContext({
     category: string,
     images: string[],
   ) => {},
+  deleteProduct: (productId: string) => {},
   loggedIn: false,
   setLoggedIn: (loggedIn: boolean) => {},
   setLoginHeight: (loginHeight: number) => {},
@@ -194,6 +195,32 @@ const AuthProvider = (props: Props) => {
       console.error('Error hacer registro:', error);
     }
   };
+
+  const deleteProduct = async (productId: string) => {
+    try {
+      const response = await fetch(`${Api}/products/${productId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Actualizar la lista de productos después de eliminar
+        // Puedes implementar lógica adicional si es necesario
+        // Ejemplo: Recargar la lista de productos
+        // const updatedProducts = await fetch(Api + '/products');
+        // const data = await updatedProducts.json();
+        // setProducts(data.products);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.msg);
+      }
+    } catch (error) {
+      console.error('Error al eliminar producto:', error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -207,6 +234,7 @@ const AuthProvider = (props: Props) => {
         updateUser,
         logoutUser,
         PostAd,
+        deleteProduct,
         loggedIn,
         setLoggedIn,
         setLoginHeight,

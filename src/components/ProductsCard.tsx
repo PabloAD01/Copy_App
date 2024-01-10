@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Image, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {IProduct} from '../screens/HomeScreen';
 import LikeButton from './LikeButton';
+import {AuthContext} from '../providers/AuthProvider';
 
 type Props = {
   data: IProduct;
@@ -10,8 +11,17 @@ type Props = {
 
 const ProductsCard = ({data, onPress}: Props) => {
   const [playing, setPlaying] = useState<boolean | null>(null);
+  const {deleteProduct, loggedIn, id} = useContext(AuthContext);
   const handlePress = () => {
     setPlaying(prevPlaying => (prevPlaying === null ? true : !prevPlaying));
+  };
+
+  const handleDelete = () => {
+    // Verifica si el usuario es el creador del producto
+    if (loggedIn && data.createdBy === id) {
+      // Elimina el producto
+      deleteProduct(data._id);
+    }
   };
 
   const handleOnPress = () => {
@@ -49,6 +59,11 @@ const ProductsCard = ({data, onPress}: Props) => {
           </Text>
           <LikeButton like={playing} onPress={handlePress} />
         </View>
+        {loggedIn && data.createdBy === id && (
+          <TouchableOpacity onPress={handleDelete}>
+            <Text style={{color: 'red'}}>Eliminar</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );
